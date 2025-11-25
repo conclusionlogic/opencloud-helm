@@ -13372,6 +13372,73 @@
         }
       },
       "type": "object"
+    },
+    "ldap": {
+      "additionalProperties": false,
+      "description": "LDAP configuration",
+      "properties": {
+        "internal": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false,
+              "description": "Enable OpenLDAP service"
+            },
+            "image": {
+              "additionalProperties": false,
+              "properties": {
+                "registry": {
+                  "type": "string"
+                },
+                "repository": {
+                  "type": "string"
+                },
+                "tag": {
+                  "type": "string"
+                },
+                "pullPolicy": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "existingSecret": {
+              "type": "string"
+            },
+            "adminPassword": {
+              "type": "string"
+            },
+            "persistence": {
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "size": {
+                  "type": "string"
+                },
+                "storageClass": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "accessMode": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "resources": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
     }
   },
   "required": [
@@ -13405,7 +13472,8 @@
     "onlyoffice",
     "tika",
     "minio",
-    "keycloak"
+    "keycloak",
+    "ldap"
   ],
   "type": "object"
 }
