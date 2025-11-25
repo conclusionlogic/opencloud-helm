@@ -61,7 +61,11 @@ spec:
         - name: data
           {{- if .Values.postgres.persistence.enabled }}
           persistentVolumeClaim:
+            {{- if .Values.postgres.persistence.existingClaim }}
+            claimName: {{ .Values.postgres.persistence.existingClaim | quote }}
+            {{- else }}
             claimName: {{ include "opencloud.postgres.fullname" . }}-data
+            {{- end }}
           {{- else }}
           emptyDir: {}
           {{- end }}

@@ -2,22 +2,24 @@
 
 This file lists the maintainers and reviewers for the OpenCloud Helm Charts repository.
 
-## Maintainers
+## Roles
 
+### Maintainers
 Maintainers have the ability to merge PRs, create releases, and guide the overall direction of the project.
 
-- @butonic
-
-## Reviewers
-
+### Reviewers
 Reviewers have the ability to review PRs and approve them, but do not have merge access.
 
-- @michaelstingl
-- @WrenIX
-- @ferenc-hechler
-- @suse-coder
-- @johanneskastl / @kastl-ars
-- @Tim-herbie
+## Team Members
+
+| Member | Role | Permissions | Known Platforms/Environments |
+|--------|------|-------------|----------------------------|
+| @butonic | Maintainer | Admin | - |
+| @michaelstingl | Co-Maintainer | Write (Push, Merge) | Rackspace Spot, Rancher Desktop (macOS) |
+| @WrenIX | Reviewer | Triage | - |
+| @suse-coder | Reviewer | Triage | Talos + Cilium |
+| @Tim-herbie | Reviewer | Triage | External Keycloak, HA deployments |
+| @johanneskastl / @kastl-ars | Reviewer | Read (pending Triage) | - |
 
 ## Becoming a Maintainer or Reviewer
 

@@ -97,6 +97,10 @@ spec:
         {{- if .Values.onlyoffice.persistence.enabled }}
         - name: onlyoffice-data
           persistentVolumeClaim:
+            {{- if .Values.onlyoffice.persistence.existingClaim }}
+            claimName: {{ .Values.onlyoffice.persistence.existingClaim | quote }}
+            {{- else }}
             claimName: {{ include "opencloud.fullname" . }}-onlyoffice-data
+            {{- end }}
         {{- end }}
 {{- end }}

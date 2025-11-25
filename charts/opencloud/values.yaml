@@ -53,6 +53,10 @@ global:
     issuer: ""
     # OIDC client ID for OpenCloud
     clientId: "web"
+    # OIDC account URL for user account management. If set, overrides the default Keycloak internal account URL.
+    # This is the URL where users can manage their accounts, typically provided by Keycloak.
+    # Example: https://keycloak.opencloud.test/realms/openCloud/account
+    accountUrl: ""
 
   # Global storage settings
   storage:
@@ -183,6 +187,8 @@ postgres:
   # Persistence configuration
   persistence:
     enabled: true
+    # Name of existing PVC to use (overrides all other persistence values)
+    existingClaim: ""
     # Size of the persistent volume
     size: 1Gi
     # Storage class
@@ -321,7 +327,7 @@ collabora:
 
   admin:
     # ignored if collabora.existingSecret is set
-    user: admin
+    username: admin
 
     # ignored if collabora.existingSecret is set
     password: admin
@@ -368,6 +374,8 @@ onlyoffice:
   persistence:
     # Enable persistence
     enabled: true
+    # Name of existing PVC to use (overrides all other persistence values)
+    existingClaim: ""
     # Size of the persistent volume
     size: 2Gi
   # Resources allocation
@@ -492,16 +500,28 @@ opencloud:
       memory: 20Gi
   # Persistence configuration
   persistence:
-    # Enable persistence
-    enabled: true
-    # Size of the persistent volume for data
-    size: 30Gi
-    # Size of the persistent volume for config
-    configSize: 5Gi
-    # Storage class
-    storageClass: ""
-    # Access mode (ReadWriteOnce or ReadWriteMany for multiple replicas)
-    accessMode: ReadWriteOnce
+    config:
+      # Enable persistence
+      enabled: true
+      # Name of existing PVC to use (overrides all other persistence values)
+      existingClaim: ""
+      # Size of the persistent volume for config
+      size: 5Gi
+      # Storage class
+      storageClass: ""
+      # Access mode (ReadWriteOnce or ReadWriteMany for multiple replicas)
+      accessMode: ReadWriteOnce
+    data:
+      # Enable persistence
+      enabled: true
+      # Name of existing PVC to use (overrides all other persistence values)
+      existingClaim: ""
+      # Size of the persistent volume for data
+      size: 30Gi
+      # Storage class
+      storageClass: ""
+      # Access mode (ReadWriteOnce or ReadWriteMany for multiple replicas)
+      accessMode: ReadWriteOnce
   # Configuration files
   config:
     theme: "owncloud"
@@ -592,6 +612,8 @@ opencloud:
   
   # Storage configuration
   storage:
+    # Storage mode for user files, can be "s3" (default) or "posixfs"
+    mode: s3
     # S3 storage configuration
     s3:
       # Internal MinIO instance
@@ -639,6 +661,8 @@ opencloud:
         # Persistence configuration
         persistence:
           enabled: true
+          # Name of existing PVC to use (overrides all other persistence values)
+          existingClaim: ""
           # Size of the persistent volume
           size: 30Gi
           # Storage class
@@ -669,6 +693,22 @@ opencloud:
         bucket: ""
         # Create bucket if it doesn't exist
         createBucket: true
+    posixfs:
+      # The type of the cache store, supported values are: 'memory', 'redis-sentinel', 'nats-js-kv' (default), 'noop'
+      idCacheStore: nats-js-kv
+      # Path of storage root directory, default is /var/lib/opencloud/storage
+      rootPath: "/var/lib/opencloud/storage"
+      persistence:
+        # Enable persistence
+        enabled: true
+        # Name of existing PVC to use (overrides all other persistence values)
+        existingClaim: ""
+        # Size of the persistent volume for data
+        size: 30Gi
+        # Storage class
+        storageClass: ""
+        # Access mode (ReadWriteOnce or ReadWriteMany for multiple replicas)
+        accessMode: ReadWriteMany
 
 # =====================================================================
 # GATEWAY-API HTTPRoute
@@ -692,6 +732,8 @@ httpRoute:
     className: cilium
     # Gateway namespace (defaults to Release.Namespace)
     namespace: ""
+    # Gateway section name (applies to all routes). If set to a non-empty value, this overrides the default component-specific section names (e.g., opencloud-https, onlyoffice-https) for all routes. If left empty, the defaults are used.
+    sectionName: ""
     # Gateway annotations
     annotations:
     # Gateway annotations
@@ -714,7 +756,11 @@ ingress:
   # Some components (e.g., OnlyOffice) require the X-Forwarded-Proto header to be set.
   #
   # Set 'annotationsPreset' to inject known ingress-controller-specific annotations
-  # for injecting the header. Supported values: nginx, traefik, haproxy, contour, istio
+  # for injecting the header. Supported values: nginx, nginx-no-snippets, traefik, haproxy, contour, istio
+  #
+  # Use 'nginx-no-snippets' for environments where NGINX configuration snippets are forbidden
+  # (e.g., Rackspace, security-restricted clusters). This preset uses built-in NGINX features
+  # instead of custom configuration snippets.
   #
   # If set to "traefik" and OnlyOffice is enabled, the chart will create a Middleware
   # named 'add-x-forwarded-proto-https' for use in both Ingress and Gateway HTTPRoute.

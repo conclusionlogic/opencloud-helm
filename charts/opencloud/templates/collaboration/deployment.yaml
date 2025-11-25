@@ -146,9 +146,13 @@ spec:
             {{- toYaml .Values.onlyoffice.collaboration.resources | nindent 12 }}
       volumes:
         - name: etc-opencloud
-          {{- if .Values.opencloud.persistence.enabled }}
+          {{- if .Values.opencloud.persistence.config.enabled }}
           persistentVolumeClaim:
+            {{- if .Values.opencloud.persistence.config.existingClaim }}
+            claimName: {{ .Values.opencloud.persistence.config.existingClaim | quote }}
+            {{- else }}
             claimName: {{ include "opencloud.opencloud.fullname" . }}-config
+            {{- end }}
             readOnly: true
           {{- else }}
           # If persistence is disabled, use an init container to copy the config

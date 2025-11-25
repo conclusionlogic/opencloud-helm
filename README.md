@@ -1,8 +1,15 @@
-<img src="https://helm.sh/img/helm.svg" width="100px" heigth="100px">
+> [!CAUTION]
+> ## Community Charts – Not Officially Supported
+> This repository is maintained by the community and is **not** officially supported by OpenCloud GmbH.  
+>  
+> For **production-ready Helm charts** designed for **mission-critical** workloads, please use the enterprise offering, available with a [business subscription](https://opencloud.eu/en/product/service-and-support).  
+>  
+> To access **production-ready helm charts** get in touch with us via [contact form](https://opencloud.eu/en/contact-us) or Email [sales@opencloud.eu](mailto:sales@opencloud.eu).
 
-# OpenCloud Helm Charts
+# Community Helm Charts
 
 Welcome to the **OpenCloud Helm Charts** repository! This repository is intended as a community-driven space for developing and maintaining Helm charts for deploying OpenCloud on Kubernetes.
+**Community Maintained** This repository is **community-maintained** and **not officially supported by OpenCloud GmbH**. Use at your own risk, and feel free to contribute to improve the project!
 
 ## 📑 Table of Contents
 
@@ -10,8 +17,10 @@ Welcome to the **OpenCloud Helm Charts** repository! This repository is intended
 - [Community](#-community)
 - [Contributing](#-contributing)
 - [Prerequisites](#prerequisites)
+- [Version Stability Notice](#⚠️-version-stability-notice)
 - [Available Charts](#-available-charts)
   - [Production Chart](#production-chart-chartsopencloud)
+  - [Microservices Chart](#microservices-chart-chartsopencloud-microservices)
   - [Development Chart](#development-chart-chartsopencloud-dev)
 - [License](#-license)
 - [Community Maintained](#community-maintained)
@@ -78,6 +87,22 @@ The complete OpenCloud deployment with all components for production use:
 
 [View Production Chart Documentation](./charts/opencloud/README.md)
 
+### Microservices Chart (`charts/opencloud-microservices`)
+
+**Architecture**: Pod-per-service
+- Every single service in its own pod
+- Full Gateway API integration
+- NATS service discovery required
+- Keycloak for authentication
+- MinIO for object storage
+- Integrated OpenLDAP 
+- Integrated ClamAV
+- Posix support
+- Helm and Timoni Chart for FluxCD
+- Document editing with Collabora and/or OnlyOffice
+- Slightly higher resource usage due to microservices pod overhead
+- See [architectural warnings](./charts/opencloud-microservices/README.md#architectural-considerations)
+
 ### Development Chart (`charts/opencloud-dev`)
 
 A lightweight single-container deployment for development and testing:
@@ -90,8 +115,6 @@ A lightweight single-container deployment for development and testing:
 
 ## 📜 License
 
-This project is licensed under the **AGPLv3** licence. See the [LICENSE](LICENSE) file for more details.
+This project is licensed under the **AGPLv3** license. See the [LICENSE](LICENSE) file for more details.
 
-## Community Maintained
 
-This repository is **community-maintained** and **not officially supported by OpenCloud GmbH**. Use at your own risk, and feel free to contribute to improve the project!

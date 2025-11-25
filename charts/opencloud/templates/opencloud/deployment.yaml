@@ -37,6 +37,7 @@ spec:
     spec:
       securityContext:
         fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
       initContainers:
         - name: init-config
           image: {{ include "opencloud.image" (dict "imageValues" .Values.busybox.image "global" .Values.global) | quote }}
@@ -202,7 +203,7 @@ spec:
                   name: {{- if .Values.opencloud.smtp.existingSecret }}
                           {{ .Values.opencloud.smtp.existingSecret }}
                         {{- else }}
-                          opencloud-smtp
+                          {{ include "opencloud.opencloud.fullname" . }}-smtp
                         {{- end }}
                   key: smtpUser
             - name: NOTIFICATIONS_SMTP_PASSWORD
@@ -211,7 +212,7 @@ spec:
                   name: {{- if .Values.opencloud.smtp.existingSecret }}
                           {{ .Values.opencloud.smtp.existingSecret }}
                         {{- else }}
-                          opencloud-smtp
+                          {{ include "opencloud.opencloud.fullname" . }}-smtp
                         {{- end }}
                   key: smtpPassword
             - name: NOTIFICATIONS_SMTP_INSECURE
@@ -225,7 +226,7 @@ spec:
             # IDP specific configuration
             - name: PROXY_AUTOPROVISION_ACCOUNTS
               value: "true"
-            # user properties are edited in the idp, so we hate to make them readonly
+            # user properties are edited in the idp, so we have to make them readonly
             - name: FRONTEND_READONLY_USER_ATTRIBUTES
               value: "user.onPremisesSamAccountName,user.displayName,user.mail,user.passwordProfile,user.accountEnabled,user.appRoleAssignments"
             - name: PROXY_ROLE_ASSIGNMENT_DRIVER
@@ -235,6 +236,12 @@ spec:
               value: {{ .Values.global.oidc.issuer | quote }}
               {{- else }}
               value: {{ printf "https://%s/realms/%s" (include "opencloud.keycloak.domain" .) .Values.keycloak.internal.realm | quote }}
+              {{- end }}
+            - name: WEB_OPTION_ACCOUNT_EDIT_LINK_HREF
+              {{- if .Values.global.oidc.accountUrl }}
+              value: {{ .Values.global.oidc.accountUrl | quote }}
+              {{- else }}
+              value: {{ printf "https://%s/realms/%s/account" (include "opencloud.keycloak.domain" .) .Values.keycloak.internal.realm | quote }}
               {{- end }}
             - name: PROXY_OIDC_REWRITE_WELLKNOWN
               value: "true"
@@ -345,12 +352,21 @@ spec:
             # Storage configuration
             # Always use decomposeds3 for user storage and decomposed for system storage
             - name: STORAGE_USERS_DRIVER
+            {{- if eq .Values.opencloud.storage.mode "posixfs" }}
+              value: "posix"
+            {{- else }}
               value: "decomposeds3"
+            {{- end }}
             - name: STORAGE_SYSTEM_DRIVER
               value: "decomposed"
             
+            {{- if eq .Values.opencloud.storage.mode "posixfs" }}
+            - name: STORAGE_USERS_POSIX_ROOT
+              value: {{ .Values.opencloud.storage.posixfs.rootPath | quote }}
+            - name: STORAGE_USERS_ID_CACHE_STORE
+              value: {{ .Values.opencloud.storage.posixfs.idCacheStore | quote }}
             # S3 storage configuration
-            {{- if .Values.opencloud.storage.s3.external.enabled }}
+            {{- else if and (eq .Values.opencloud.storage.mode "s3") .Values.opencloud.storage.s3.external.enabled }}
             # External S3 storage
             - name: STORAGE_USERS_DECOMPOSEDS3_ENDPOINT
               value: {{ .Values.opencloud.storage.s3.external.endpoint | quote }}
@@ -425,6 +441,10 @@ spec:
               mountPath: /etc/opencloud
             - name: data
               mountPath: /var/lib/opencloud
+            {{- if and (eq .Values.opencloud.storage.mode "posixfs") .Values.opencloud.storage.posixfs.persistence.enabled }}
+            - name: posixfs
+              mountPath: {{ .Values.opencloud.storage.posixfs.rootPath | default "/var/lib/opencloud/storage" | quote }}
+            {{- end }}
             - name: config-json
               mountPath: /var/lib/opencloud/config.json
               subPath: config.json
@@ -446,19 +466,36 @@ spec:
             {{- toYaml .Values.opencloud.resources | nindent 12 }}
       volumes:
         - name: config
-          {{- if .Values.opencloud.persistence.enabled }}
+          {{- if .Values.opencloud.persistence.config.enabled }}
           persistentVolumeClaim:
+            {{- if .Values.opencloud.persistence.config.existingClaim }}
+            claimName: {{ .Values.opencloud.persistence.config.existingClaim | quote }}
+            {{- else }}
             claimName: {{ include "opencloud.opencloud.fullname" . }}-config
+            {{- end }}
           {{- else }}
           emptyDir: {}
           {{- end }}
         - name: data
-          {{- if .Values.opencloud.persistence.enabled }}
+          {{- if .Values.opencloud.persistence.data.enabled }}
           persistentVolumeClaim:
+            {{- if .Values.opencloud.persistence.data.existingClaim }}
+            claimName: {{ .Values.opencloud.persistence.data.existingClaim | quote }}
+            {{- else }}
             claimName: {{ include "opencloud.opencloud.fullname" . }}-data
+            {{- end }}
           {{- else }}
           emptyDir: {}
           {{- end }}
+        {{- if and (eq .Values.opencloud.storage.mode "posixfs") .Values.opencloud.storage.posixfs.persistence.enabled }}
+        - name: posixfs
+          persistentVolumeClaim:
+            {{- if .Values.opencloud.storage.posixfs.persistence.existingClaim }}
+            claimName: {{ .Values.opencloud.storage.posixfs.persistence.existingClaim | quote }}
+            {{- else }}
+            claimName: {{ include "opencloud.opencloud.fullname" . }}-posixfs
+            {{- end }}
+        {{- end }}
         - name: config-json
           configMap:
             name: {{ include "opencloud.opencloud.fullname" . }}-config-json
