@@ -1170,8 +1170,8 @@ features:
       # required: false
       # @schema
       # -- URI to connect to the LDAP secure server.
-      uri: # @schema
-
+      uri: "ldap://openldap:636"
+      # @schema
       # type: boolean
       # required: true
       # @schema
