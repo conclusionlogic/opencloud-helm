@@ -55,8 +55,13 @@ spec:
             - name: GRAPH_SPACES_WEBDAV_BASE
               value: "https://{{ .Values.externalDomain }}"
 
+            {{- if and .Values.messagingSystem.external.enabled .Values.messagingSystem.external.endpoint }}
             - name: GRAPH_STORE_NODES
-              value: {{ .Values.opencloud.nats.external.endpoint | quote }}
+              value: {{ .Values.messagingSystem.external.endpoint | quote }}
+            {{- else }}
+            - name: GRAPH_STORE_NODES
+              value: {{ tpl (join "," .Values.store.nodes) . | quote }}
+            {{- end }}
             - name: GRAPH_STORE_DATABASE
               value: graph
 
