@@ -17,16 +17,16 @@ spec:
           image: "{{ ($openldap.image.registry | default "docker.io") }}/{{ ($openldap.image.repository | default "cleanstart/openldap") }}:{{ ($openldap.image.tag | default "2.6-amd64") }}"
           imagePullPolicy: {{ $openldap.image.pullPolicy | default "IfNotPresent" }}
           securityContext:
-            allowPrivilegeEscalation: true
-            readOnlyRootFilesystem: false
-            runAsNonRoot: false
-            runAsUser: 0
-            runAsGroup: 0
-            # capabilities:
-            #   drop:
-            #     - ALL
-            #   add:
-            #     - NET_BIND_SERVICE
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - NET_BIND_SERVICE
             seccompProfile:
               type: RuntimeDefault
           env:
@@ -53,11 +53,11 @@ spec:
               subPath: 10_base.ldif
             {{- if $openldap.persistence.enabled }}
             - name: data
-              mountPath: {{ $openldap.persistence.dataPath | default "/var/lib/openldap" | quote }}
+              mountPath: {{ $openldap.persistence.dataPath | default "/var/lib/ldap" | quote }}
               subPath: data
               readOnly: false
             - name: data
-              mountPath: {{ $openldap.persistence.configPath | default "/etc/openldap/slapd.conf" | quote }}
+              mountPath: {{ $openldap.persistence.configPath | default "/etc/ldap/slapd.d" | quote }}
               subPath: config
               readOnly: false
             {{- end }}

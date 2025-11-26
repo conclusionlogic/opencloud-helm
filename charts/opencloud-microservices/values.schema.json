@@ -12602,13 +12602,13 @@
                   "type": "boolean"
                 },
                 "dataPath": {
-                  "default": "/var/lib/openldap",
+                  "default": "/var/lib/ldap",
                   "required": [],
                   "title": "dataPath",
                   "type": "string"
                 },
                 "configPath": {
-                  "default": "/etc/openldap/slapd.conf",
+                  "default": "/etc/ldap/slapd.d",
                   "required": [],
                   "title": "configPath",
                   "type": "string"

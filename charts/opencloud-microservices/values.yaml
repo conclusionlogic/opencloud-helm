@@ -5849,8 +5849,8 @@ services:
       # Access mode
       accessMode: ReadWriteOnce
       # Data and config paths inside the container
-      dataPath: /var/lib/openldap
-      configPath: /etc/openldap/slapd.conf
+      dataPath: /var/lib/ldap
+      configPath: /etc/ldap/slapd.d
 
     # Resources allocation
     resources:
