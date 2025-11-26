@@ -6,7 +6,7 @@ metadata:
   annotations:
     "helm.sh/resource-policy": "keep"
   labels:
-    {{- include "opencloud.labels" . | nindent 4 }}
+    {{- include "oc.labels" . | nindent 4 }}
     app.kubernetes.io/component: openldap
 spec:
   accessModes:

@@ -4,26 +4,26 @@ kind: Deployment
 metadata:
   name: {{ include "oc.openldap.fullname" . }}
   labels:
-    {{- include "opencloud.labels" . | nindent 4 }}
+    {{- include "oc.labels" . | nindent 4 }}
     app.kubernetes.io/component: openldap
 spec:
   replicas: 1
   selector:
     matchLabels:
-      {{- include "opencloud.selectorLabels" . | nindent 6 }}
+      {{- include "oc.selectorLabels" . | nindent 6 }}
       app.kubernetes.io/component: openldap
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        {{- include "opencloud.selectorLabels" . | nindent 8 }}
+        {{- include "oc.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: openldap
     spec:
       containers:
         - name: openldap
-          image: {{ include "opencloud.image" (dict "imageValues" .Values.ldap.image "global" .Values.global) | quote }}
-          imagePullPolicy: {{ include "opencloud.image.pullPolicy" (dict "pullPolicy" .Values.ldap.image.pullPolicy "global" .Values.global) }}
+          image: {{ include "oc.image" (dict "imageValues" .Values.ldap.image "global" .Values.global) | quote }}
+          imagePullPolicy: {{ include "oc.image.pullPolicy" (dict "pullPolicy" .Values.ldap.image.pullPolicy "global" .Values.global) }}
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:

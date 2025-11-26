@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: {{ include "oc.openldap.fullname" . }}
   labels:
-    {{- include "opencloud.labels" . | nindent 4 }}
+    {{- include "oc.labels" . | nindent 4 }}
     app.kubernetes.io/component: openldap
 spec:
   type: ClusterIP
@@ -18,6 +18,6 @@ spec:
       protocol: TCP
       name: ldaps
   selector:
-    {{- include "opencloud.selectorLabels" . | nindent 4 }}
+    {{- include "oc.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: openldap
 {{- end }}
