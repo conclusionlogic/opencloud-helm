@@ -44,8 +44,8 @@ image:
   # required: false
   # @schema
   # -- Image sha / digest (optional).
-  sha:
-  # @schema
+  sha: # @schema
+
   # type: string
   # required: true
   # @schema
@@ -70,8 +70,8 @@ image:
   #   - name: mySecret
   #   - name: mySecret2
 
-# InitContainer image used for OC services.
-# Only used if `services.xxx.persistence.chownInitContainer.enabled` is set to true for at least one service.
+  # InitContainer image used for OC services.
+  # Only used if `services.xxx.persistence.chownInitContainer.enabled` is set to true for at least one service.
 initContainerImage:
   # @schema
   # type: string
@@ -90,8 +90,8 @@ initContainerImage:
   # required: false
   # @schema
   # -- Image sha / digest (optional).
-  sha:
-  # @schema
+  sha: # @schema
+
   # type: [string, null]
   # required: true
   # @schema
@@ -140,15 +140,15 @@ tracing:
   # required: false
   # @schema
   # -- Endpoint of the tracing system, jaeger-agent.observability.svc.cluster.local:6831 or similar.
-  endpoint:
-  # @schema
+  endpoint: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- The HTTP endpoint for sending spans directly to a collector, i.e. http://jaeger-collector.observability.svc.cluster.local:14268/api/traces. Only used if the tracing endpoint is unset.
   collector:
 
-# HTTP settings for OC services.
+    # HTTP settings for OC services.
 http:
   # CORS settings for OC services.
   cors:
@@ -172,7 +172,7 @@ http:
       # @schema
       # -- child-src directive, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/child-src
       childSrc:
-        - "'self'"
+      - "'self'"
       # @schema
       # type: array
       # items:
@@ -181,16 +181,16 @@ http:
       # @schema
       # -- connect-src directive, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/connect-src
       connectSrc:
-        - "'self'"
-        # If Uppy Companion is used, you need to add it with your URI:
-        # - "https://companion.kube.opencloud.test/"
-        # - "wss:///companion.kube.opencloud.test/"
-        - 'blob:'
-        - 'https://${COMPANION_DOMAIN|companion.opencloud.test}/'
-        - 'wss://${COMPANION_DOMAIN|companion.opencloud.test}/'
-        - 'https://raw.githubusercontent.com/opencloud-eu/awesome-apps/'
-        - 'https://${KEYCLOOC_DOMAIN|keycloak.opencloud.test}/'
-        - 'https://update.opencloud.eu/'
+      - "'self'"
+      # If Uppy Companion is used, you need to add it with your URI:
+      # - "https://companion.kube.opencloud.test/"
+      # - "wss:///companion.kube.opencloud.test/"
+      - 'blob:'
+      - 'https://${COMPANION_DOMAIN|companion.opencloud.test}/'
+      - 'wss://${COMPANION_DOMAIN|companion.opencloud.test}/'
+      - 'https://raw.githubusercontent.com/opencloud-eu/awesome-apps/'
+      - 'https://${KEYCLOOC_DOMAIN|keycloak.opencloud.test}/'
+      - 'https://update.opencloud.eu/'
       # @schema
       # type: array
       # items:
@@ -199,7 +199,7 @@ http:
       # @schema
       # -- default-src directive, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/default-src
       defaultSrc:
-        - "'none'"
+      - "'none'"
       # @schema
       # type: array
       # items:
@@ -208,7 +208,7 @@ http:
       # @schema
       # -- front-src directive, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/front-src
       fontSrc:
-        - "'self'"
+      - "'self'"
       # @schema
       # type: array
       # items:
@@ -217,8 +217,7 @@ http:
       # @schema
       # -- frame-ancestors directive, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors
       frameAncestors:
-        - "'self'"
-
+      - "'self'"
       # @schema
       # type: array
       # items:
@@ -227,13 +226,13 @@ http:
       # @schema
       # -- frame-src directive, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-src
       frameSrc:
-        - "'self'"
-        - "blob:"
-        - 'https://embed.diagrams.net/'
-        # In contrary to bash and docker the default is given after the | character
-        - 'https://${COLLABORA_DOMAIN|collabora.opencloud.test}/'
-        # This is needed for the external-sites web extension when embedding sites
-        - 'https://docs.opencloud.eu'
+      - "'self'"
+      - "blob:"
+      - 'https://embed.diagrams.net/'
+      # In contrary to bash and docker the default is given after the | character
+      - 'https://${COLLABORA_DOMAIN|collabora.opencloud.test}/'
+      # This is needed for the external-sites web extension when embedding sites
+      - 'https://docs.opencloud.eu'
       # @schema
       # type: array
       # items:
@@ -242,12 +241,12 @@ http:
       # @schema
       # -- img-src directive, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/img-src
       imgSrc:
-        - "'self'"
-        - "data:"
-        - "blob:"
-        - 'https://raw.githubusercontent.com/opencloud-eu/awesome-apps/'
-        # In contrary to bash and docker the default is given after the | character
-        - 'https://${COLLABORA_DOMAIN|collabora.opencloud.test}/'
+      - "'self'"
+      - "data:"
+      - "blob:"
+      - 'https://raw.githubusercontent.com/opencloud-eu/awesome-apps/'
+      # In contrary to bash and docker the default is given after the | character
+      - 'https://${COLLABORA_DOMAIN|collabora.opencloud.test}/'
       # @schema
       # type: array
       # items:
@@ -256,7 +255,7 @@ http:
       # @schema
       # -- manifest-src directive, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/manifest-src
       manifestSrc:
-        - "'self'"
+      - "'self'"
       # @schema
       # type: array
       # items:
@@ -265,7 +264,7 @@ http:
       # @schema
       # -- media-src directive, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/media-src
       mediaSrc:
-        - "'self'"
+      - "'self'"
       # @schema
       # type: array
       # items:
@@ -274,8 +273,8 @@ http:
       # @schema
       # -- object-src directive, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/object-src
       objectSrc:
-        - "'self'"
-        - "blob:"
+      - "'self'"
+      - "blob:"
       # @schema
       # type: array
       # items:
@@ -284,8 +283,8 @@ http:
       # @schema
       # -- script-src directive, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src
       scriptSrc:
-        - "'self'"
-        - "'unsafe-inline'"
+      - "'self'"
+      - "'unsafe-inline'"
       # @schema
       # type: array
       # items:
@@ -294,8 +293,8 @@ http:
       # @schema
       # -- style-src directive, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/style-src
       styleSrc:
-        - "'self'"
-        - "'unsafe-inline'"
+      - "'self'"
+      - "'unsafe-inline'"
 
 # Debug settings for the OC service
 debug:
@@ -385,7 +384,7 @@ cache:
   # @schema
   # -- Nodes of the cache to use.
   nodes:
-    - "{{ .appNameNats }}:9233"
+  - "{{ .appNameNats }}:9233"
 
 store:
   # @schema
@@ -404,7 +403,7 @@ store:
   # @schema
   # -- Nodes of the store to use.
   nodes:
-    - "{{ .appNameNats }}:9233"
+  - "{{ .appNameNats }}:9233"
 
 registry:
   # @schema
@@ -423,7 +422,7 @@ registry:
   # @schema
   # -- Nodes of the service registry to use.
   nodes:
-    - "{{ .appNameNats }}:9233"
+  - "{{ .appNameNats }}:9233"
 
 messagingSystem:
   external:
@@ -441,8 +440,8 @@ messagingSystem:
     # required: false
     # @schema
     # -- Endpoint of the messaging system.
-    endpoint:
-    # @schema
+    endpoint: # @schema
+
     # type: [string, null]
     # required: false
     # @schema
@@ -533,21 +532,21 @@ features:
       # required: false
       # @schema
       # -- SMTP host to connect to.
-      host:
-      # @schema
+      host: # @schema
+
       # type: [integer, null]
       # minimum: 1
       # required: false
       # @schema
       # -- Port of the SMTP host to connect to.
-      port:
-      # @schema
+      port: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Sender address of emails that will be sent. Example: 'openCloud <noreply@example.com>'
-      sender:
-      # @schema
+      sender: # @schema
+
       # enum: [auto, login, plain, crammd5, none]
       # required: true
       # @schema
@@ -579,8 +578,8 @@ features:
         # required: false
         # @schema
         # -- Timezone to be applied to the cron pattern.
-        timezone:
-        # @schema
+        timezone: # @schema
+
         # type: integer
         # minimum: 1
         # required: true
@@ -605,8 +604,8 @@ features:
         # required: false
         # @schema
         # -- Timezone to be applied to the cron pattern.
-        timezone:
-        # @schema
+        timezone: # @schema
+
         # type: integer
         # minimum: 1
         # required: true
@@ -732,8 +731,7 @@ features:
       #   type: string
       # @schema
       # -- list of banned passwords
-      bannedPasswords:
-        []
+      bannedPasswords: []
         # - foo
         # - bar
   # Apps integration
@@ -904,55 +902,55 @@ features:
     # Let's you configure a mimetypes' default application, if it is allowed to create a new file and more.
     # @default -- default configuration of OC, see https://doc.opencloud.eu/opencloud/next/deployment/services/s-list/app-registry.html#yaml-example[doc.opencloud.eu]
     mimetypes:
-      - mime_type: application/vnd.oasis.opendocument.text
-        extension: odt
-        name: OpenDocument
-        description: OpenDocument text document
-        icon: image-edit
-        default_app: "Collabora"
-        allow_creation: true
-      - mime_type: application/vnd.oasis.opendocument.spreadsheet
-        extension: ods
-        name: OpenSpreadsheet
-        description: OpenDocument spreadsheet document
-        icon: image-edit
-        default_app: "Collabora"
-        allow_creation: true
-      - mime_type: application/vnd.oasis.opendocument.presentation
-        extension: odp
-        name: OpenPresentation
-        description: OpenDocument presentation document
-        icon: image-edit
-        default_app: "Collabora"
-        allow_creation: true
-      - mime_type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
-        extension: docx
-        name: Text document
-        description: Text document
-        icon: image-edit
-        default_app: "OnlyOffice"
-        allow_creation: true
-      - mime_type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-        extension: xlsx
-        name: Spreadsheet
-        description: Spreadsheet
-        icon: image-edit
-        default_app: "OnlyOffice"
-        allow_creation: true
-      - mime_type: application/vnd.openxmlformats-officedocument.presentationml.presentation
-        extension: pptx
-        name: Presentation
-        description: Presentation
-        icon: image-edit
-        default_app: "OnlyOffice"
-        allow_creation: true
-      - mime_type: application/vnd.openxmlformats-officedocument.wordprocessingml.form
-        extension: docxf
-        name: FormDocument
-        description: Form document
-        icon: image-edit
-        default_app: "OnlyOffice"
-        allow_creation: true
+    - mime_type: application/vnd.oasis.opendocument.text
+      extension: odt
+      name: OpenDocument
+      description: OpenDocument text document
+      icon: image-edit
+      default_app: "Collabora"
+      allow_creation: true
+    - mime_type: application/vnd.oasis.opendocument.spreadsheet
+      extension: ods
+      name: OpenSpreadsheet
+      description: OpenDocument spreadsheet document
+      icon: image-edit
+      default_app: "Collabora"
+      allow_creation: true
+    - mime_type: application/vnd.oasis.opendocument.presentation
+      extension: odp
+      name: OpenPresentation
+      description: OpenDocument presentation document
+      icon: image-edit
+      default_app: "Collabora"
+      allow_creation: true
+    - mime_type: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+      extension: docx
+      name: Text document
+      description: Text document
+      icon: image-edit
+      default_app: "OnlyOffice"
+      allow_creation: true
+    - mime_type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      extension: xlsx
+      name: Spreadsheet
+      description: Spreadsheet
+      icon: image-edit
+      default_app: "OnlyOffice"
+      allow_creation: true
+    - mime_type: application/vnd.openxmlformats-officedocument.presentationml.presentation
+      extension: pptx
+      name: Presentation
+      description: Presentation
+      icon: image-edit
+      default_app: "OnlyOffice"
+      allow_creation: true
+    - mime_type: application/vnd.openxmlformats-officedocument.wordprocessingml.form
+      extension: docxf
+      name: FormDocument
+      description: Form document
+      icon: image-edit
+      default_app: "OnlyOffice"
+      allow_creation: true
   # External user management
   externalUserManagement:
     # @schema
@@ -1016,22 +1014,22 @@ features:
       # -- Issuer URI of the OpenID Connect Identity Provider.
       # If the IDP doesn't have valid / trusted SSL certificates, certificate validation can be disabled with the `insecure.oidcIdpInsecure` option.
       # The issuerURI will be automatically be added to http.csp.directives.connectSrc
-      issuerURI:
-      # @schema
+      issuerURI: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Link to the OIDC provider's user accessible session management. This will be shown to the user on the personal account page.
       # When using Keycloak with the a realm named "oc" this could point to eg. https://keycloak.opencloud.test/realms/opencloud/account/
-      sessionManagementLink:
-      # @schema
+      sessionManagementLink: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Link to the OIDC provider's user accessible account editing page. This will be shown to the user on the personal account page.
       # When using Keycloak with the a realm named "oc" this could point to eg. https://keycloak.opencloud.test/realms/opencloud/account/
-      editAccountLink:
-      # @schema
+      editAccountLink: # @schema
+
       # type: string
       # required: true
       # @schema
@@ -1172,8 +1170,8 @@ features:
       # required: false
       # @schema
       # -- URI to connect to the LDAP secure server.
-      uri:
-      # @schema
+      uri: # @schema
+
       # type: boolean
       # required: true
       # @schema
@@ -1358,8 +1356,8 @@ features:
         # required: false
         # @schema
         # -- LDAP filter to add to the default filters for group searches.
-        filter:
-        # @schema
+        filter: # @schema
+
         # type: string
         # required: true
         # @schema
@@ -1403,26 +1401,26 @@ features:
         # required: false
         # @schema
         # -- Base URI of keycloak.
-        basePath:
-        # @schema
+        basePath: # @schema
+
         # type: [string, null]
         # required: false
         # @schema
         # -- Client ID to authenticate against keycloak with.
-        clientID:
-        # @schema
+        clientID: # @schema
+
         # type: [string, null]
         # required: false
         # @schema
         # -- Realm that the client ID is configured in, usually master.
-        clientRealm:
-        # @schema
+        clientRealm: # @schema
+
         # type: [string, null]
         # required: false
         # @schema
         # -- Realm that the users are in.
-        userRealm:
-        # @schema
+        userRealm: # @schema
+
         # type: boolean
         # required: true
         # @schema
@@ -1438,14 +1436,14 @@ features:
     # -- Define the roles by specifying a name of a ConfigMap which already contains the the role description (might also be defined in the `extraResources` section).
     # The ConfigMap needs to contain a file named `custom-roles.json` which holds the role description in JSON format
     # Please note that you have to restart the settings service manually if you change the content of you ConfigMap.
-    customRolesConfigRef:
-    # @schema
+    customRolesConfigRef: # @schema
+
     # type: [string, null]
     # required: false
     # @schema
     # -- Define the roles by providing the JSON text here.
-    customRoles:
-    # @schema
+    customRoles: # @schema
+
     # type: array
     # required: true
     # items:
@@ -1464,14 +1462,14 @@ features:
     # required: false
     # @schema
     # -- Sets the maximum quota for spaces in bytes. So 1000 sets the max quota to 1KB.
-    max:
-    # @schema
+    max: # @schema
+
     # type: [string, null]
     # required: false
     # @schema
     # -- Sets the default quota for spaces in bytes. So 1000 sets the default quota to 1KB. 0 means unlimited.
-    default:
-    # @schema
+    default: # @schema
+
     # type: object
     # required: true
     # patternProperties:
@@ -1487,7 +1485,7 @@ features:
     #   71881883-1768-46bd-a24d-a356a2afdf7f: 100000000000
     #   # Space Administrator Role set to 100GB
     #   2aadd357-682c-406b-8874-293091995fdd: 100000000000
-  # Define virus scanning
+    # Define virus scanning
   virusscan:
     # @schema
     # type: boolean
@@ -1510,8 +1508,8 @@ features:
     # @schema
     # -- Sets a maximum file size for scans. Only this many bytes of a file will be scanned. 0 means unlimited and is the default.
     # Usable common abbreviations: [KB, KiB, MB, MiB, GB, GiB, TB, TiB, PB, PiB, EB, EiB], example: 2GB.
-    maxScanSize:
-    # @schema
+    maxScanSize: # @schema
+
     # enum: [icap, clamav]
     # required: true
     # @schema
@@ -1537,14 +1535,13 @@ features:
       # required: false
       # @schema
       # -- Sets the icap url
-      url:
-      # @schema
+      url: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Sets the service to be used in icap
-      service:
-  # Define policies
+      service: # Define policies
   policies:
     # @schema
     # type: boolean
@@ -1588,11 +1585,11 @@ features:
     #     package postprocessing
     #     default granted := true
     #
-  # @schema
-  # enum: [Community, Enterprise]
-  # required: true
-  # @schema
-  # -- Edition of openCloud .
+    # @schema
+    # enum: [Community, Enterprise]
+    # required: true
+    # @schema
+    # -- Edition of openCloud .
   edition: Community
   # Archiver settings
   archiver:
@@ -1640,7 +1637,7 @@ features:
     # Documentation can be found at https://doc.opencloud.eu/opencloud/next/deployment/services/s-list/opencloudm.html#trust-between-instances
     providersConfigRef:
 
-# Ingress for OC.
+      # Ingress for OC.
 ingress:
   # @schema
   # type: boolean
@@ -1654,8 +1651,8 @@ ingress:
   # @schema
   # -- Ingress class to use.
   # Uses the default ingress class if not set.
-  ingressClassName:
-  # @schema
+  ingressClassName: # @schema
+
   # $ref: schema/templates.json#/annotationsTemplate
   # @schema
   # -- Ingress annotations.
@@ -1686,7 +1683,7 @@ ingress:
   #    hosts:
   #      - oc.opencloud.test
 
-# Gateway configuration
+  # Gateway configuration
 gateway:
   httproute:
     enabled: false
@@ -1708,14 +1705,14 @@ configRefs:
   # required: false
   # @schema
   # -- Reference to an existing storage-users config.
-  storageusersConfigRef:
-  # @schema
+  storageusersConfigRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- Reference to an existing graph config.
-  graphConfigRef:
-  # @schema
+  graphConfigRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
@@ -1723,8 +1720,8 @@ configRefs:
   # Will be mounted to /var/lib/opencloud/web/assets/themes/opencloud for Web.
   # Does not get autogenerated.
   # Hint: if you set this, you'll no longer be able to change the instance logo via the Web UI.
-  webThemeConfigRef:
-  # @schema
+  webThemeConfigRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
@@ -1732,145 +1729,145 @@ configRefs:
   # Will be mounted to /var/lib/opencloud/web/assets/themes/opencloud/assets for Web.
   # Does not get autogenerated.
   # Hint: if you set this, you'll no longer be able to change the instance logo via the Web UI.
-  webThemeAssetsConfigRef:
-  # @schema
+  webThemeAssetsConfigRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- Reference to an existing authservice config.
   authServiceConfigRef:
 
-# References to secrets.
-# Leave these empty to have them autogenerated by the Helm chart.
-# Note that secrets generated by the helm chart will be removed once the helm chart is uninstalled.
-# Furthermore, if you already had secrets at the default locations, they will be NOT be overwritten,
-# but the helm chart will claim ownership of them. If this is a problem, fill in the secretRefs below
-# with the names of your existing secrets.
-# TODO: Update documentation in https://github.com/opencloud-eu/helm for how to generate certificates.
+    # References to secrets.
+    # Leave these empty to have them autogenerated by the Helm chart.
+    # Note that secrets generated by the helm chart will be removed once the helm chart is uninstalled.
+    # Furthermore, if you already had secrets at the default locations, they will be NOT be overwritten,
+    # but the helm chart will claim ownership of them. If this is a problem, fill in the secretRefs below
+    # with the names of your existing secrets.
+    # TODO: Update documentation in https://github.com/opencloud-eu/helm for how to generate certificates.
 secretRefs:
   # @schema
   # type: [string, null]
   # required: false
   # @schema
   # -- Reference to an existing admin user secret (see ref:Secrets#secrets). Not used if `features.externalUserManagement.enabled` equals `true`.
-  adminUserSecretRef:
-  # @schema
+  adminUserSecretRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- Reference to an existing collaboration service WOPI secret (see ref:Secrets#secrets). Not used if `features.appsIntegration.enabled` equals `false`.
-  collaborationWopiSecret:
-  # @schema
+  collaborationWopiSecret: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- Reference to an existing IDP secret (see ref:Secrets#secrets). Not used if `features.externalUserManagement.enabled` equals `true`.
-  idpSecretRef:
-  # @schema
+  idpSecretRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- Reference to an existing JWT secret (see ref:Secrets#secrets).
-  jwtSecretRef:
-  # @schema
+  jwtSecretRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- Reference to an existing keycloak client secret, used for the GDPR export. Only used if features.externalUserManagement.gdprExport.enabled equals true.
-  gdprExportClientSecretRef:
-  # @schema
+  gdprExportClientSecretRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- Reference to an existing LDAP certificate authority secret (see ref:Secrets#secrets)
-  ldapCaRef:
-  # @schema
+  ldapCaRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- Reference to an existing LDAP cert secret (see ref:Secrets#secrets). Not used if `features.externalUserManagement.enabled` equals `true`.
-  ldapCertRef:
-  # @schema
+  ldapCertRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- Reference to an existing LDAP bind secret (see ref:Secrets#secrets).
-  ldapSecretRef:
-  # @schema
+  ldapSecretRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- Reference to an existing machine auth api key secret (see ref:Secrets#secrets)
-  machineAuthApiKeySecretRef:
-  # @schema
+  machineAuthApiKeySecretRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- Reference to an existing messaging system certificate authority secret (see ref:Secrets#secrets)
-  messagingSystemCaRef:
-  # @schema
+  messagingSystemCaRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- Reference to an existing SMTP email server settings secret (see ref:Secrets#secrets).
   # Not used if `features.emailNotifications.enabled` equals `false`.
   # Not used if `features.emailNotifications.smtp.authentication` equals `none`.
-  notificationsSmtpSecretRef:
-  # @schema
+  notificationsSmtpSecretRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- Reference to an existing storage-system JWT secret (see ref:Secrets#secrets)
-  storagesystemJwtSecretRef:
-  # @schema
+  storagesystemJwtSecretRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- Reference to an existing storage-system secret (see ref:Secrets#secrets)
-  storagesystemSecretRef:
-  # @schema
+  storagesystemSecretRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- Reference to an existing thumbnails transfer secret (see ref:Secrets#secrets)
-  thumbnailsSecretRef:
-  # @schema
+  thumbnailsSecretRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- Reference to an existing transfer secret (see ref:Secrets#secrets)
-  transferSecretSecretRef:
-  # @schema
+  transferSecretSecretRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- Reference to an existing s3 secret (see ref:Secrets#secrets)
   # If not filled in, will attempt to use values in `.storageusers.storageBackend.s3.driverConfig.decomposeds3` instead.
-  s3CredentialsSecretRef:
-  # @schema
+  s3CredentialsSecretRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- Reference to an existing service account secret (see ref:Secrets#secrets)
-  serviceAccountSecretRef:
-  # @schema
+  serviceAccountSecretRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- The secret to secure the global notifications endpoint. Only system admins and users knowing that secret can call the global notifications POST/DELETE endpoints.
-  globalNotificationsSecretRef:
-  # @schema
+  globalNotificationsSecretRef: # @schema
+
   # type: [string, null]
   # required: false
   # @schema
   # -- Reference to an existing URL signing secret (see ref:Secrets#secrets).
   urlSigningSecretRef:
 
-# @schema
-# type: boolean
-# required: true
-# @schema
-# -- ServiceAccount for Flux RBAC
+    # @schema
+    # type: boolean
+    # required: true
+    # @schema
+    # -- ServiceAccount for Flux RBAC
 serviceAccount:
   enabled: false
 
@@ -1891,7 +1888,7 @@ customCAChain:
   # -- If custom CA chain is enabled this attribute mounts the existing ConfigMap to /etc/ssl/custom.
   existingConfigMap:
 
-# Security context options.
+    # Security context options.
 securityContext:
   # @schema
   # type: integer
@@ -1930,8 +1927,10 @@ securityContext:
 # -- TopologySpreadConstraints controls how Pods of a service are spread across the cluster among failure-domains.
 # Defaults to allow skew no more then 1 node per node.
 # Passed through tpl and therefore needs to be configured as string.
-topologySpreadConstraints: # |
-#  - maxSkew: 1
+topologySpreadConstraints:
+  # |
+  #  - maxSkew: 1
+
 #    topologyKey: kubernetes.io/hostname
 #    whenUnsatisfiable: DoNotSchedule
 #    labelSelector:
@@ -1988,8 +1987,7 @@ replicas: 1
 # $ref: schema/templates.json#/podDisruptionBudgetTemplate
 # @schema
 # -- Default PodDisruptionBudget to apply to all services, except per-service PodDisruptionBudget configuration in `services.<service-name>.podDisruptionBudget` is set.
-podDisruptionBudget:
-  {}
+podDisruptionBudget: {}
   # -- Sets the maxUnavailable or the global PodDisruptionBudget.
   # maxUnavailable: 1
 
@@ -2026,8 +2024,7 @@ autoscaling:
 # Best practice is to:
 # - set memory request == memory limit (compare to https://home.robusta.dev/blog/kubernetes-memory-limit)
 # - set cpu request and omit cpu limit (compare to https://home.robusta.dev/blog/stop-using-cpu-limits)
-resources:
-  {}
+resources: {}
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
@@ -2039,8 +2036,7 @@ resources:
 # $ref: schema/templates.json#/labelsTemplate
 # @schema
 # -- Default nodeSelector to apply to all services, except per-service nodeSelector configuration in `services.<service-name>.nodeSelector` is set.
-nodeSelector:
-  {}
+nodeSelector: {}
   # kubernetes.io/hostname: node-01
   # kubernetes.io/arch: amd64
 
@@ -2051,8 +2047,7 @@ nodeSelector:
 # Best practice is to:
 # - set memory request == memory limit (compare to https://home.robusta.dev/blog/kubernetes-memory-limit)
 # - set cpu request and omit cpu limit (compare to https://home.robusta.dev/blog/stop-using-cpu-limits)
-jobResources:
-  {}
+jobResources: {}
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
@@ -2064,8 +2059,7 @@ jobResources:
 # $ref: schema/templates.json#/labelsTemplate
 # @schema
 # -- Default nodeSelector to apply to all jobs, except per-service job nodeSelector configuration in `services.<service-name>.jobNodeSelector` is set.
-jobNodeSelector:
-  {}
+jobNodeSelector: {}
   # kubernetes.io/hostname: node-01
   # kubernetes.io/arch: amd64
 
@@ -2136,8 +2130,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -2189,31 +2183,31 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- COLLABORATION service. Not used if `features.appsIntegration.enabled` equals `false`.
-  # @schema
-  # $ref: "#/definitions/service"
-  # @schema
-  # -- Configuration for the Collaboration service.
+        # -- COLLABORATION service. Not used if `features.appsIntegration.enabled` equals `false`.
+        # @schema
+        # $ref: "#/definitions/service"
+        # @schema
+        # -- Configuration for the Collaboration service.
   collaboration:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -2230,8 +2224,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -2259,31 +2253,31 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- APP REGISTRY service. Not used if `features.appsIntegration.enabled` equals `false`.
-  # @schema
-  # $ref: "#/definitions/service"
-  # @schema
-  # -- Configuration for the App Registry service.
+        # -- APP REGISTRY service. Not used if `features.appsIntegration.enabled` equals `false`.
+        # @schema
+        # $ref: "#/definitions/service"
+        # @schema
+        # -- Configuration for the App Registry service.
   appregistry:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -2300,8 +2294,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/affinityTemplate
     # @schema
     # -- Per-service affinity.
@@ -2318,31 +2312,31 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- AUDIT service.
-  # @schema
-  # $ref: "#/definitions/service"
-  # @schema
-  # -- Configuration for the Audit service.
+        # -- AUDIT service.
+        # @schema
+        # $ref: "#/definitions/service"
+        # @schema
+        # -- Configuration for the Audit service.
   audit:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -2359,8 +2353,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -2387,28 +2381,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- AUTH MACHINE service.
-  # @default -- see detailed service configuration options below
+        # -- AUTH MACHINE service.
+        # @default -- see detailed service configuration options below
   authmachine:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -2425,8 +2419,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -2453,28 +2447,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- AUTH SERVICE service.
-  # @default -- see detailed service configuration options below
+        # -- AUTH SERVICE service.
+        # @default -- see detailed service configuration options below
   authservice:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -2491,8 +2485,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -2519,28 +2513,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- ANTIVIRUS service. Not used if `features.virusscan.enabled` equals `false`.
-  # @default -- see detailed service configuration options below
+        # -- ANTIVIRUS service. Not used if `features.virusscan.enabled` equals `false`.
+        # @default -- see detailed service configuration options below
   antivirus:
     events:
       consumer:
@@ -2566,8 +2560,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -2594,28 +2588,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- CLIENTLOG service.
-  # @default -- see detailed service configuration options below
+        # -- CLIENTLOG service.
+        # @default -- see detailed service configuration options below
   clientlog:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -2632,8 +2626,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -2660,28 +2654,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- EVENT HISTORY service.
-  # @default -- see detailed service configuration options below
+        # -- EVENT HISTORY service.
+        # @default -- see detailed service configuration options below
   eventhistory:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -2698,8 +2692,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -2726,28 +2720,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- FRONTEND service.
-  # @default -- see detailed service configuration options below
+        # -- FRONTEND service.
+        # @default -- see detailed service configuration options below
   frontend:
     events:
       consumer:
@@ -2773,8 +2767,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -2801,28 +2795,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- GATEWAY service.
-  # @default -- see detailed service configuration options below
+        # -- GATEWAY service.
+        # @default -- see detailed service configuration options below
   gateway:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -2839,8 +2833,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -2867,28 +2861,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- GRAPH service.
-  # @default -- see detailed service configuration options below
+        # -- GRAPH service.
+        # @default -- see detailed service configuration options below
   graph:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -2905,8 +2899,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -2933,28 +2927,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- GROUPS service.
-  # @default -- see detailed service configuration options below
+        # -- GROUPS service.
+        # @default -- see detailed service configuration options below
   groups:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -2968,8 +2962,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -2996,28 +2990,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- IDM service. Not used if `features.externalUserManagement.enabled` equals `true`.
-  # @default -- see detailed service configuration options below
+        # -- IDM service. Not used if `features.externalUserManagement.enabled` equals `true`.
+        # @default -- see detailed service configuration options below
   idm:
     # -- Persistence settings.
     # @default -- see detailed persistence configuration options below
@@ -3045,8 +3039,8 @@ services:
       # @schema
       # -- Storage class to use.
       # Uses the default storage class if not set.
-      storageClassName:
-      # @schema
+      storageClassName: # @schema
+
       # type: array
       # items:
       #   enum:
@@ -3058,7 +3052,7 @@ services:
       # @schema
       # -- Persistent volume access modes.
       accessModes:
-        - ReadWriteOnce
+      - ReadWriteOnce
       # @schema
       # type: string
       # required: true
@@ -3075,7 +3069,7 @@ services:
       # @schema
       # -- Persistent volume finalizers.
       finalizers:
-        - kubernetes.io/pvc-protection
+      - kubernetes.io/pvc-protection
       # @schema
       # $ref: schema/templates.json#/labelsTemplate
       # @schema
@@ -3086,17 +3080,17 @@ services:
       # required: false
       # @schema
       # -- Use a custom name for the PVC instead of the default one.
-      claimName:
-      # @schema
+      claimName: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Use an existing PersistentVolumeClaim for persistence.
       existingClaim:
-    # @schema
-    # $ref: schema/templates.json#/resourcesTemplate
-    # @schema
-    # -- Per-service resources configuration. Overrides the default setting from `resources` if set.
+        # @schema
+        # $ref: schema/templates.json#/resourcesTemplate
+        # @schema
+        # -- Per-service resources configuration. Overrides the default setting from `resources` if set.
     resources: {}
     # @schema
     # $ref: schema/templates.json#/labelsTemplate
@@ -3108,8 +3102,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/affinityTemplate
     # @schema
     # -- Per-service affinity.
@@ -3126,28 +3120,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- IDP service. Not used if `features.externalUserManagement.enabled` equals `true`.
-  # @default -- see detailed service configuration options below
+        # -- IDP service. Not used if `features.externalUserManagement.enabled` equals `true`.
+        # @default -- see detailed service configuration options below
   idp:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -3181,28 +3175,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- NATS service. Not used if `messagingSystem.external.enabled` equals `true`.
-  # @default -- see detailed service configuration options below
+        # -- NATS service. Not used if `messagingSystem.external.enabled` equals `true`.
+        # @default -- see detailed service configuration options below
   nats:
     # -- Persistence settings.
     # @default -- see detailed persistence configuration options below
@@ -3230,8 +3224,8 @@ services:
       # @schema
       # -- Storage class to use.
       # Uses the default storage class if not set.
-      storageClassName:
-      # @schema
+      storageClassName: # @schema
+
       # type: array
       # items:
       #   enum:
@@ -3243,7 +3237,7 @@ services:
       # @schema
       # -- Persistent volume access modes.
       accessModes:
-        - ReadWriteOnce
+      - ReadWriteOnce
       # @schema
       # type: string
       # required: true
@@ -3261,7 +3255,7 @@ services:
       # @schema
       # -- Persistent volume finalizers.
       finalizers:
-        - kubernetes.io/pvc-protection
+      - kubernetes.io/pvc-protection
       # @schema
       # $ref: schema/templates.json#/labelsTemplate
       # @schema
@@ -3272,17 +3266,17 @@ services:
       # required: false
       # @schema
       # -- Use a custom name for the PVC instead of the default one.
-      claimName:
-      # @schema
+      claimName: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Use an existing PersistentVolumeClaim for persistence.
       existingClaim:
-    # @schema
-    # $ref: schema/templates.json#/resourcesTemplate
-    # @schema
-    # -- Per-service resources configuration. Overrides the default setting from `resources` if set.
+        # @schema
+        # $ref: schema/templates.json#/resourcesTemplate
+        # @schema
+        # -- Per-service resources configuration. Overrides the default setting from `resources` if set.
     resources: {}
     # @schema
     # $ref: schema/templates.json#/labelsTemplate
@@ -3294,8 +3288,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/affinityTemplate
     # @schema
     # -- Per-service affinity.
@@ -3312,28 +3306,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- NOTIFICATIONS service. Not used if `features.emailNotifications.enabled` equals `true`.
-  # @default -- see detailed service configuration options below
+        # -- NOTIFICATIONS service. Not used if `features.emailNotifications.enabled` equals `true`.
+        # @default -- see detailed service configuration options below
   notifications:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -3350,8 +3344,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -3378,29 +3372,29 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
-    # @schema
-    # $ref: schema/templates.json#/resourcesTemplate
-    # @schema
-    # -- Per-service jobResources configuration. Overrides the default setting from `jobResources` if set.
+        # @schema
+        # $ref: schema/templates.json#/resourcesTemplate
+        # @schema
+        # -- Per-service jobResources configuration. Overrides the default setting from `jobResources` if set.
     jobResources: {}
     # @schema
     # $ref: schema/templates.json#/labelsTemplate
@@ -3432,8 +3426,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -3460,28 +3454,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- OCM service.
-  # @default -- see detailed service configuration options below
+        # -- OCM service.
+        # @default -- see detailed service configuration options below
   ocm:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -3498,8 +3492,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/affinityTemplate
     # @schema
     # -- Per-service affinity.
@@ -3516,27 +3510,27 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
-    # -- Persistence settings.
-    # @default -- see detailed persistence configuration options below
+        # -- Persistence settings.
+        # @default -- see detailed persistence configuration options below
     persistence:
       # @schema
       # type: boolean
@@ -3562,8 +3556,8 @@ services:
       # @schema
       # -- Storage class to use.
       # Uses the default storage class if not set.
-      storageClassName:
-      # @schema
+      storageClassName: # @schema
+
       # type: array
       # items:
       #   enum:
@@ -3575,7 +3569,7 @@ services:
       # @schema
       # -- Persistent volume access modes.
       accessModes:
-        - ReadWriteOnce
+      - ReadWriteOnce
       # @schema
       # type: string
       # required: true
@@ -3593,7 +3587,7 @@ services:
       # @schema
       # -- Persistent volume finalizers.
       finalizers:
-        - kubernetes.io/pvc-protection
+      - kubernetes.io/pvc-protection
       # @schema
       # $ref: schema/templates.json#/labelsTemplate
       # @schema
@@ -3604,16 +3598,16 @@ services:
       # required: false
       # @schema
       # -- Use a custom name for the PVC instead of the default one.
-      claimName:
-      # @schema
+      claimName: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Use an existing PersistentVolumeClaim for persistence.
       existingClaim:
 
-  # -- OCS service.
-  # @default -- see detailed service configuration options below
+        # -- OCS service.
+        # @default -- see detailed service configuration options below
   ocs:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -3630,8 +3624,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -3658,28 +3652,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- POLICIES service.
-  # @default -- see detailed service configuration options below
+        # -- POLICIES service.
+        # @default -- see detailed service configuration options below
   policies:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -3696,8 +3690,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -3724,28 +3718,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- POSTPROCESSING service.
-  # @default -- see detailed service configuration options below
+        # -- POSTPROCESSING service.
+        # @default -- see detailed service configuration options below
   postprocessing:
     events:
       consumer:
@@ -3771,8 +3765,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -3799,28 +3793,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- PROXY service.
-  # @default -- see detailed service configuration options below
+        # -- PROXY service.
+        # @default -- see detailed service configuration options below
   proxy:
     # @schema
     # additionalProperties: true
@@ -3850,8 +3844,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -3878,28 +3872,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- SEARCH service.
-  # @default -- see detailed service configuration options below
+        # -- SEARCH service.
+        # @default -- see detailed service configuration options below
   search:
     # -- Search Extractor settings.
     # @default -- see detailed search extractor configuration options below
@@ -3926,8 +3920,8 @@ services:
         # required: false
         # @schema
         # -- Set the URL to Tika. Only applicable if `services.search.extractor.type` == `tika`.
-        url:
-        # @schema
+        url: # @schema
+
         # type: boolean
         # required: true
         # @schema
@@ -3959,8 +3953,8 @@ services:
       # @schema
       # -- Storage class to use.
       # Uses the default storage class if not set.
-      storageClassName:
-      # @schema
+      storageClassName: # @schema
+
       # type: array
       # items:
       #   enum:
@@ -3972,7 +3966,7 @@ services:
       # @schema
       # -- Persistent volume access modes.
       accessModes:
-        - ReadWriteOnce
+      - ReadWriteOnce
       # @schema
       # type: string
       # required: true
@@ -3990,7 +3984,7 @@ services:
       # @schema
       # -- Persistent volume finalizers.
       finalizers:
-        - kubernetes.io/pvc-protection
+      - kubernetes.io/pvc-protection
       # @schema
       # $ref: schema/templates.json#/labelsTemplate
       # @schema
@@ -4001,17 +3995,17 @@ services:
       # required: false
       # @schema
       # -- Use a custom name for the PVC instead of the default one.
-      claimName:
-      # @schema
+      claimName: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Use an existing PersistentVolumeClaim for persistence.
       existingClaim:
-    # @schema
-    # $ref: schema/templates.json#/resourcesTemplate
-    # @schema
-    # -- Per-service resources configuration. Overrides the default setting from `resources` if set.
+        # @schema
+        # $ref: schema/templates.json#/resourcesTemplate
+        # @schema
+        # -- Per-service resources configuration. Overrides the default setting from `resources` if set.
     resources: {}
     # @schema
     # $ref: schema/templates.json#/labelsTemplate
@@ -4023,8 +4017,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -4046,28 +4040,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- SETTINGS service.
-  # @default -- see detailed service configuration options below
+        # -- SETTINGS service.
+        # @default -- see detailed service configuration options below
   settings:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -4084,8 +4078,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -4112,28 +4106,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- SHARING service.
-  # @default -- see detailed service configuration options below
+        # -- SHARING service.
+        # @default -- see detailed service configuration options below
   sharing:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -4150,8 +4144,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -4178,32 +4172,32 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
-    # @schema
-    # type: integer
-    # minimum: 1
-    # required: true
-    # @schema
-    # -- Maximum number of concurrent go-routines. Higher values can potentially get work done faster but will also cause
-    # more load on the system. Values of 0 or below will be ignored and the default value will be used.
+        # @schema
+        # type: integer
+        # minimum: 1
+        # required: true
+        # @schema
+        # -- Maximum number of concurrent go-routines. Higher values can potentially get work done faster but will also cause
+        # more load on the system. Values of 0 or below will be ignored and the default value will be used.
     maxConcurrency: 20 # this differs from the OC product, see https://github.com/opencloud/opencloud/issues/10647#issuecomment-2498338980
 
   # -- SSE service
@@ -4231,8 +4225,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -4259,28 +4253,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- STORAGE-PUBLICLINK service.
-  # @default -- see detailed service configuration options below
+        # -- STORAGE-PUBLICLINK service.
+        # @default -- see detailed service configuration options below
   storagepubliclink:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -4297,8 +4291,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -4325,28 +4319,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- STORAGE-SHARES service.
-  # @default -- see detailed service configuration options below
+        # -- STORAGE-SHARES service.
+        # @default -- see detailed service configuration options below
   storageshares:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -4363,8 +4357,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -4391,28 +4385,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- STORAGE-SYSTEM service.
-  # @default -- see detailed service configuration options below
+        # -- STORAGE-SYSTEM service.
+        # @default -- see detailed service configuration options below
   storagesystem:
     # -- Persistence settings.
     # @default -- see detailed persistence configuration options below
@@ -4441,8 +4435,8 @@ services:
       # @schema
       # -- Storage class to use.
       # Uses the default storage class if not set.
-      storageClassName:
-      # @schema
+      storageClassName: # @schema
+
       # type: array
       # items:
       #   enum:
@@ -4454,7 +4448,7 @@ services:
       # @schema
       # -- Persistent volume access modes. Needs to be `[ReadWriteMany]` when having more than one replica for this service.
       accessModes:
-        - ReadWriteOnce
+      - ReadWriteOnce
       # @schema
       # type: string
       # required: true
@@ -4472,7 +4466,7 @@ services:
       # @schema
       # -- Persistent volume finalizers.
       finalizers:
-        - kubernetes.io/pvc-protection
+      - kubernetes.io/pvc-protection
       # @schema
       # $ref: schema/templates.json#/labelsTemplate
       # @schema
@@ -4483,17 +4477,17 @@ services:
       # required: false
       # @schema
       # -- Use a custom name for the PVC instead of the default one.
-      claimName:
-      # @schema
+      claimName: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Use an existing PersistentVolumeClaim for persistence.
       existingClaim:
-    # @schema
-    # $ref: schema/templates.json#/resourcesTemplate
-    # @schema
-    # -- Per-service resources configuration. Overrides the default setting from `resources` if set.
+        # @schema
+        # $ref: schema/templates.json#/resourcesTemplate
+        # @schema
+        # -- Per-service resources configuration. Overrides the default setting from `resources` if set.
     resources: {}
     # @schema
     # $ref: schema/templates.json#/labelsTemplate
@@ -4505,8 +4499,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -4533,28 +4527,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- STORAGE-USERS service.
-  # @default -- see detailed service configuration options below
+        # -- STORAGE-USERS service.
+        # @default -- see detailed service configuration options below
   storageusers:
     events:
       consumer:
@@ -4625,8 +4619,8 @@ services:
           # required: false
           # @schema
           # -- S3 endpoint to use for the DECOMPOSEDS3 driver. Only used if driver is set to "decomposeds3".
-          endpoint:
-          # @schema
+          endpoint: # @schema
+
           # type: string
           # required: true
           # @schema
@@ -4698,8 +4692,8 @@ services:
         # required: false
         # @schema
         # -- Timezone to be applied to the cron pattern.
-        timezone:
-        # @schema
+        timezone: # @schema
+
         # type: integer
         # minimum: 1
         # required: true
@@ -4733,8 +4727,8 @@ services:
         # required: false
         # @schema
         # -- Timezone to be applied to the cron pattern.
-        timezone:
-        # @schema
+        timezone: # @schema
+
         # type: integer
         # minimum: 1
         # required: true
@@ -4774,8 +4768,8 @@ services:
         # required: false
         # @schema
         # -- Timezone to be applied to the cron pattern.
-        timezone:
-        # @schema
+        timezone: # @schema
+
         # type: integer
         # minimum: 1
         # required: true
@@ -4790,28 +4784,28 @@ services:
         # required: false
         # @schema
         # -- Image repository
-        repository:
-        # @schema
+        repository: # @schema
+
         # type: [string, null]
         # required: false
         # @schema
         # -- Image tag.
-        tag:
-        # @schema
+        tag: # @schema
+
         # type: [string, null]
         # required: false
         # @schema
         # -- Image sha / digest (optional).
-        sha:
-        # @schema
+        sha: # @schema
+
         # type: [string, null]
         # required: false
         # @schema
         # -- Image pull policy
         pullPolicy:
 
-    # -- Persistence settings.
-    # @default -- see detailed persistence configuration options below
+          # -- Persistence settings.
+          # @default -- see detailed persistence configuration options below
     persistence:
       # @schema
       # type: boolean
@@ -4837,8 +4831,8 @@ services:
       # @schema
       # -- Storage class to use.
       # Uses the default storage class if not set.
-      storageClassName:
-      # @schema
+      storageClassName: # @schema
+
       # type: array
       # items:
       #   enum:
@@ -4850,7 +4844,7 @@ services:
       # @schema
       # -- Persistent volume access modes. Needs to be `[ReadWriteMany]` when having more than one replica for this service.
       accessModes:
-        - ReadWriteOnce
+      - ReadWriteOnce
       # @schema
       # type: string
       # required: true
@@ -4868,7 +4862,7 @@ services:
       # @schema
       # -- Persistent volume finalizers.
       finalizers:
-        - kubernetes.io/pvc-protection
+      - kubernetes.io/pvc-protection
       # @schema
       # $ref: schema/templates.json#/labelsTemplate
       # @schema
@@ -4879,17 +4873,17 @@ services:
       # required: false
       # @schema
       # -- Use a custom name for the PVC instead of the default one.
-      claimName:
-      # @schema
+      claimName: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Use an existing PersistentVolumeClaim for persistence.
       existingClaim:
-    # @schema
-    # $ref: schema/templates.json#/resourcesTemplate
-    # @schema
-    # -- Per-service resources configuration. Overrides the default setting from `resources` if set.
+        # @schema
+        # $ref: schema/templates.json#/resourcesTemplate
+        # @schema
+        # -- Per-service resources configuration. Overrides the default setting from `resources` if set.
     resources: {}
     # @schema
     # $ref: schema/templates.json#/labelsTemplate
@@ -4901,14 +4895,14 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # type: [string, null]
     # required: false
     # @schema
     # -- Per-service jobPriorityClassName configuration. Overrides the default setting from `jobPriorityClassName` if set.
-    jobPriorityClassName:
-    # @schema
+    jobPriorityClassName: # @schema
+
     # $ref: schema/templates.json#/resourcesTemplate
     # @schema
     # -- Per-service jobResources configuration. Overrides the default setting from `jobResources` if set.
@@ -4945,28 +4939,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- THUMBNAILS service.
-  # @default -- see detailed service configuration options below
+        # -- THUMBNAILS service.
+        # @default -- see detailed service configuration options below
   thumbnails:
     quota:
       # @schema
@@ -5023,8 +5017,8 @@ services:
       # @schema
       # -- Storage class to use.
       # Uses the default storage class if not set.
-      storageClassName:
-      # @schema
+      storageClassName: # @schema
+
       # type: array
       # items:
       #   enum:
@@ -5036,7 +5030,7 @@ services:
       # @schema
       # -- Persistent volume access modes. Needs to be `[ReadWriteMany]` when having more than one replica for this service or persistence needs to be disabled.
       accessModes:
-        - ReadWriteOnce
+      - ReadWriteOnce
       # @schema
       # type: string
       # required: true
@@ -5064,17 +5058,17 @@ services:
       # required: false
       # @schema
       # -- Use a custom name for the PVC instead of the default one.
-      claimName:
-      # @schema
+      claimName: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Use an existing PersistentVolumeClaim for persistence.
       existingClaim:
-    # @schema
-    # $ref: schema/templates.json#/resourcesTemplate
-    # @schema
-    # -- Per-service resources configuration. Overrides the default setting from `resources` if set.
+        # @schema
+        # $ref: schema/templates.json#/resourcesTemplate
+        # @schema
+        # -- Per-service resources configuration. Overrides the default setting from `resources` if set.
     resources: {}
     # @schema
     # $ref: schema/templates.json#/labelsTemplate
@@ -5086,8 +5080,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/resourcesTemplate
     # @schema
     # -- Per-service jobResources configuration. Overrides the default setting from `jobResources` if set.
@@ -5102,8 +5096,8 @@ services:
     # required: false
     # @schema
     # -- Per-service jobPriorityClassName configuration. Overrides the default setting from `jobPriorityClassName` if set.
-    jobPriorityClassName:
-    # @schema
+    jobPriorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -5128,8 +5122,8 @@ services:
         # required: false
         # @schema
         # -- Timezone to be applied to the cron pattern.
-        timezone:
-        # @schema
+        timezone: # @schema
+
         # type: integer
         # minimum: 1
         # required: true
@@ -5168,8 +5162,8 @@ services:
         # required: false
         # @schema
         # -- Image sha / digest (optional).
-        sha:
-        # @schema
+        sha: # @schema
+
         # type: [string, null]
         # required: true
         # @schema
@@ -5197,28 +5191,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- USERLOG service.
-  # @default -- see detailed service configuration options below
+        # -- USERLOG service.
+        # @default -- see detailed service configuration options below
   userlog:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -5235,8 +5229,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -5263,32 +5257,32 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
-    # @schema
-    # type: integer
-    # minimum: 1
-    # required: true
-    # @schema
-    # -- Maximum number of concurrent go-routines. Higher values can potentially get work done faster but will also cause
-    # more load on the system. Values of 0 or below will be ignored and the default value will be used.
+        # @schema
+        # type: integer
+        # minimum: 1
+        # required: true
+        # @schema
+        # -- Maximum number of concurrent go-routines. Higher values can potentially get work done faster but will also cause
+        # more load on the system. Values of 0 or below will be ignored and the default value will be used.
     maxConcurrency: 1
 
   # -- USERS service.
@@ -5309,8 +5303,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -5337,28 +5331,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- openCloud WEB service.
-  # @default -- see detailed service configuration options below
+        # -- openCloud WEB service.
+        # @default -- see detailed service configuration options below
   web:
     # Configuration for web, that ends up in the config.json file.
     config:
@@ -5390,41 +5384,36 @@ services:
         # required: false
         # @schema
         # -- URI where the feedback link points. Uses the openCloud default href if empty.
-        href:
-        # @schema
+        href: # @schema
+
         # type: [string, null]
         # required: false
         # @schema
         # -- Screen reader accessible label for the feedback link. Uses the openCloud default label if empty.
-        ariaLabel:
-        # @schema
+        ariaLabel: # @schema
+
         # type: [string, null]
         # required: false
         # @schema
         # -- Description to be shown for the feedback link. Uses the openCloud default description if empty.
         description:
-      # @schema
-      # additionalProperties: true
-      # @schema
-      # -- Configure the {"styles": []} section in the Web config.json.
-      styles:
-        []
-        # - href: /theme/foo.css
+          # @schema
+          # additionalProperties: true
+          # @schema
+          # -- Configure the {"styles": []} section in the Web config.json.
+      styles: [] # - href: /theme/foo.css
       # @schema
       # additionalProperties: true
       # @schema
       # -- Configure the {"scripts": []} section in the Web config.json.
-      scripts:
-        []
+      scripts: []
         # - src: /theme/foo.js
         #   async: true
       # @schema
       # additionalProperties: true
       # @schema
       # -- Configure custom translations
-      customTranslations:
-        []
-        # - url: https://opencloud.kube.opencloud.test/custom_translations.json
+      customTranslations: [] # - url: https://opencloud.kube.opencloud.test/custom_translations.json
       # @schema
       # additionalProperties: true
       # @schema
@@ -5442,8 +5431,8 @@ services:
         # required: false
         # @schema
         # -- URL to load themes from. Will be prepended to the theme path. Defaults to the value of "externalDomain".
-        server:
-        # @schema
+        server: # @schema
+
         # type: string
         # required: true
         # @schema
@@ -5475,19 +5464,19 @@ services:
         # required: false
         # @schema
         # -- URI where to redirect the user after a logout was performed. Defaults to the URI of the login page.
-        postLogoutRedirectURI:
-        # @schema
+        postLogoutRedirectURI: # @schema
+
         # type: [string, null]
         # format: uri
         # required: false
         # @schema
         # -- Specifies the target url valid for the logged out / access denied page.
         loginURL:
-      # @schema
-      # type: boolean
-      # required: true
-      # @schema
-      # Defines whether one ore more filters must be set in order to list users in the Web admin settings.
+          # @schema
+          # type: boolean
+          # required: true
+          # @schema
+          # Defines whether one ore more filters must be set in order to list users in the Web admin settings.
       userListRequiresFilter: false
       # Embed mode settings
       embed:
@@ -5502,14 +5491,14 @@ services:
         # required: false
         # @schema
         # Specifies how web is being integrated when running in "embed"-mode. Currently supported values are "location" and  (default).
-        target:
-        # @schema
+        target: # @schema
+
         # type: [string, null]
         # required: false
         # @schema
         # Specifies a URL under which web can be integrated via iFrame. This needs to be specified when web is running in "embed"-mode.
-        messagesOrigin:
-        # @schema
+        messagesOrigin: # @schema
+
         # type: boolean
         # required: true
         # @schema
@@ -5528,22 +5517,22 @@ services:
         # required: false
         # @schema
         # Defines the maximum number of concurrent requests per file/folder/space batch action. If uset, the default of openCloud Web will be used.
-        resourceBatchActionRequests:
-        # @schema
+        resourceBatchActionRequests: # @schema
+
         # type: [integer, null]
         # minimum: 1
         # required: false
         # @schema
         # Defines the maximum number of concurrent requests in SSE event handlers. If uset, the default of openCloud Web will be used.
-        sseRequests:
-        # @schema
+        sseRequests: # @schema
+
         # type: [integer, null]
         # minimum: 1
         # required: false
         # @schema
         # Defines the maximum number of concurrent requests per sharing invite batch. If uset, the default of openCloud Web will be used.
-        shareCreateRequests:
-        # @schema
+        shareCreateRequests: # @schema
+
         # type: [integer, null]
         # minimum: 1
         # required: false
@@ -5551,8 +5540,8 @@ services:
         # Defines the maximum number of concurrent requests when loading individual share information inside listings. If uset, the default of openCloud Web will be used.
         shareListRequests:
 
-    # -- Persistence settings.
-    # @default -- see detailed persistence configuration options below
+          # -- Persistence settings.
+          # @default -- see detailed persistence configuration options below
     persistence:
       # @schema
       # type: boolean
@@ -5576,8 +5565,8 @@ services:
       # @schema
       # -- Storage class to use.
       # Uses the default storage class if not set.
-      storageClassName:
-      # @schema
+      storageClassName: # @schema
+
       # type: array
       # items:
       #   enum:
@@ -5589,7 +5578,7 @@ services:
       # @schema
       # -- Persistent volume access modes. Needs to be `[ReadWriteMany]` when having more than one replica for this service or persistence needs to be disabled.
       accessModes:
-        - ReadWriteOnce
+      - ReadWriteOnce
       # @schema
       # type: string
       # required: true
@@ -5617,17 +5606,17 @@ services:
       # required: false
       # @schema
       # -- Use a custom name for the PVC instead of the default one.
-      claimName:
-      # @schema
+      claimName: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Use an existing PersistentVolumeClaim for persistence.
       existingClaim:
-    # @schema
-    # $ref: schema/templates.json#/resourcesTemplate
-    # @schema
-    # -- Per-service resources configuration. Overrides the default setting from `resources` if set.
+        # @schema
+        # $ref: schema/templates.json#/resourcesTemplate
+        # @schema
+        # -- Per-service resources configuration. Overrides the default setting from `resources` if set.
     resources: {}
     # @schema
     # $ref: schema/templates.json#/labelsTemplate
@@ -5639,8 +5628,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -5667,29 +5656,29 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
-    # @schema
-    # additionalProperties: true
-    # @schema
-    # -- Additional init containers for the Web pods.
+        # @schema
+        # additionalProperties: true
+        # @schema
+        # -- Additional init containers for the Web pods.
     additionalInitContainers: []
 
   # -- WEBDAV service.
@@ -5710,8 +5699,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -5738,28 +5727,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- WEBFINGER service.
-  # @default -- see detailed service configuration options below
+        # -- WEBFINGER service.
+        # @default -- see detailed service configuration options below
   webfinger:
     # @schema
     # $ref: schema/templates.json#/resourcesTemplate
@@ -5776,8 +5765,8 @@ services:
     # required: false
     # @schema
     # -- Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.
-    priorityClassName:
-    # @schema
+    priorityClassName: # @schema
+
     # $ref: schema/templates.json#/podDisruptionBudgetTemplate
     # @schema
     # -- Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.
@@ -5804,28 +5793,28 @@ services:
       # required: false
       # @schema
       # -- Image repository
-      repository:
-      # @schema
+      repository: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image tag.
-      tag:
-      # @schema
+      tag: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image sha / digest (optional).
-      sha:
-      # @schema
+      sha: # @schema
+
       # type: [string, null]
       # required: false
       # @schema
       # -- Image pull policy
       pullPolicy:
 
-  # -- OPENLDAP service.
-  # Internal identity management (LDAP)
+        # -- OPENLDAP service.
+        # Internal identity management (LDAP)
   openldap:
     # Enable LDAP
     enabled: true
@@ -5860,7 +5849,7 @@ services:
       # Access mode
       accessMode: ReadWriteOnce
       # Data and config paths inside the container
-      dataPath: /var/lib/ldap
+      dataPath: /var/lib/openldap
       configPath: /etc/ldap/slapd.d
 
     # Resources allocation
@@ -6014,14 +6003,14 @@ onlyoffice:
     # @schema
     # -- Persistent volume access modes.
     accessModes:
-      - ReadWriteOnce
+    - ReadWriteOnce
     # @schema
     # type: [string, null]
     # required: false
     # @schema
     # -- Storage class to use. Uses the default storage class if not set.
-    storageClassName:
-    # @schema
+    storageClassName: # @schema
+
     # type: string
     # required: true
     # @schema
@@ -6144,63 +6133,63 @@ onlyoffice:
     fileConverter:
       converter:
         inputLimits:
-          - # @schema
+        # @schema
+        # type: string
+        # required: true
+        # @schema
+        # -- File type
+        - type: "docx;dotx;docm;dotm"
+          zip:
+            # @schema
             # type: string
             # required: true
             # @schema
-            # -- File type
-            type: "docx;dotx;docm;dotm"
-            zip:
-              # @schema
-              # type: string
-              # required: true
-              # @schema
-              # -- Uncompressed size limit
-              uncompressed: "1GB"
-              # @schema
-              # type: string
-              # required: true
-              # @schema
-              # -- Template
-              template: "*.xml"
-          - # @schema
+            # -- Uncompressed size limit
+            uncompressed: "1GB"
+            # @schema
             # type: string
             # required: true
             # @schema
-            # -- File type
-            type: "xlsx;xltx;xlsm;xltm"
-            zip:
-              # @schema
-              # type: string
-              # required: true
-              # @schema
-              # -- Uncompressed size limit
-              uncompressed: "1GB"
-              # @schema
-              # type: string
-              # required: true
-              # @schema
-              # -- Template
-              template: "*.xml"
-          - # @schema
+            # -- Template
+            template: "*.xml"
+        # @schema
+        # type: string
+        # required: true
+        # @schema
+        # -- File type
+        - type: "xlsx;xltx;xlsm;xltm"
+          zip:
+            # @schema
             # type: string
             # required: true
             # @schema
-            # -- File type
-            type: "pptx;ppsx;potx;pptm;ppsm;potm"
-            zip:
-              # @schema
-              # type: string
-              # required: true
-              # @schema
-              # -- Uncompressed size limit
-              uncompressed: "1GB"
-              # @schema
-              # type: string
-              # required: true
-              # @schema
-              # -- Template
-              template: "*.xml"
+            # -- Uncompressed size limit
+            uncompressed: "1GB"
+            # @schema
+            # type: string
+            # required: true
+            # @schema
+            # -- Template
+            template: "*.xml"
+        # @schema
+        # type: string
+        # required: true
+        # @schema
+        # -- File type
+        - type: "pptx;ppsx;potx;pptm;ppsm;potm"
+          zip:
+            # @schema
+            # type: string
+            # required: true
+            # @schema
+            # -- Uncompressed size limit
+            uncompressed: "1GB"
+            # @schema
+            # type: string
+            # required: true
+            # @schema
+            # -- Template
+            template: "*.xml"
 
 # Collabora configuration
 collabora:
@@ -6512,24 +6501,24 @@ minio:
     # @schema
     # -- MinIO buckets
     buckets:
-      - # @schema
-        # type: string
-        # required: true
-        # @schema
-        # -- Bucket name
-        name: opencloud-bucket
-        # @schema
-        # type: string
-        # required: true
-        # @schema
-        # -- Bucket policy
-        policy: none
-        # @schema
-        # type: boolean
-        # required: true
-        # @schema
-        # -- Purge bucket on deletion
-        purge: false
+    # @schema
+    # type: string
+    # required: true
+    # @schema
+    # -- Bucket name
+    - name: opencloud-bucket
+      # @schema
+      # type: string
+      # required: true
+      # @schema
+      # -- Bucket policy
+      policy: none
+      # @schema
+      # type: boolean
+      # required: true
+      # @schema
+      # -- Purge bucket on deletion
+      purge: false
     # MinIO persistence
     persistence:
       # @schema
@@ -6544,14 +6533,14 @@ minio:
       # @schema
       # -- Persistent volume access modes.
       accessModes:
-        - ReadWriteOnce
+      - ReadWriteOnce
       # @schema
       # type: [string, null]
       # required: false
       # @schema
       # -- Storage class to use. Uses the default storage class if not set.
-      storageClassName:
-      # @schema
+      storageClassName: # @schema
+
       # type: string
       # required: true
       # @schema
@@ -6566,7 +6555,6 @@ minio:
       requests:
         cpu: 100m
         memory: 128Mi
-
 
 # Internal Test Keycloak
 keycloak:
@@ -6707,5 +6695,5 @@ keycloak:
     # type: string
     # required: true
     # @schema
-# -- Keycloak client ID
+    # -- Keycloak client ID
     clientId: "web"

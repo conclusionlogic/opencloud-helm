@@ -12602,7 +12602,7 @@
                   "type": "boolean"
                 },
                 "dataPath": {
-                  "default": "/var/lib/ldap",
+                  "default": "/var/lib/openldap",
                   "required": [],
                   "title": "dataPath",
                   "type": "string"
