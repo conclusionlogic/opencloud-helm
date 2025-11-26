@@ -14,10 +14,7 @@ spec:
     spec:
       containers:
         - name: {{ .appName }}
-          {{- $registry := $openldap.image.registry | default "docker.io" -}}
-          {{- $repository := $openldap.image.repository | default "cleanstart/openldap" -}}
-          {{- $tag := $openldap.image.tag | default "2.6-amd64" -}}
-          image: "{{ $registry }}/{{ $repository }}:{{ $tag }}"
+          image: "{{ ($openldap.image.registry | default "docker.io") }}/{{ ($openldap.image.repository | default "cleanstart/openldap") }}:{{ ($openldap.image.tag | default "2.6-amd64") }}"
           imagePullPolicy: {{ $openldap.image.pullPolicy | default "IfNotPresent" }}
           securityContext:
             allowPrivilegeEscalation: false
