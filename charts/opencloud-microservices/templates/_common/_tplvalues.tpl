@@ -66,6 +66,14 @@ Create a fully qualified OnlyOffice name.
 
 
 {{/*
+Create a fully qualified OpenLDAP name.
+*/}}
+{{- define "oc.openldap.fullname" -}}
+{{- printf "%s-openldap" (include "oc.fullname" .) | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+
+{{/*
 Adds the app names to the scope and set the name of the app based on the input parameters
 
 @param .scope          The current scope
