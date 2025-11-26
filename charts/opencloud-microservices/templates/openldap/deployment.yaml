@@ -38,7 +38,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.secretRefs.ldapSecretRef | default .appName }}
-                  key: adminPassword
+                  key: reva-ldap-bind-password
           ports:
             - name: ldap
               containerPort: {{ $openldap.ports.ldap | default 389 }}
