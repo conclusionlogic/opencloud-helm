@@ -53,8 +53,9 @@ spec:
               subPath: 10_base.ldif
             {{- if $openldap.persistence.enabled }}
             - name: data
-              mountPath: {{ $openldap.persistence.dataPath | default "/var/lib/ldap" | quote }}
+              mountPath: {{ $openldap.persistence.dataPath | default "/var/lib/openldap" | quote }}
               subPath: data
+              readOnly: false
             - name: data
               mountPath: {{ $openldap.persistence.configPath | default "/etc/ldap/slapd.d" | quote }}
               subPath: config
