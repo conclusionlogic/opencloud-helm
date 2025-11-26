@@ -12366,6 +12366,20 @@
               "title": "affinity",
               "type": "object"
             },
+            "domain": {
+              "default": "opencloud.eu",
+              "description": "LDAP domain (used to derive base DN).",
+              "required": [],
+              "title": "domain",
+              "type": "string"
+            },
+            "organisation": {
+              "default": "OpenCloud",
+              "description": "LDAP organisation attribute value.",
+              "required": [],
+              "title": "organisation",
+              "type": "string"
+            },
             "autoscaling": {
               "additionalProperties": true,
               "description": "Per-service autoscaling. Overrides the default setting from `autoscaling` if set.",
@@ -12446,6 +12460,22 @@
               },
               "required": [],
               "title": "image",
+              "type": "object"
+            },
+            "ports": {
+              "additionalProperties": false,
+              "properties": {
+                "ldap": {
+                  "default": 389,
+                  "type": "integer"
+                },
+                "ldaps": {
+                  "default": 636,
+                  "type": "integer"
+                }
+              },
+              "required": [],
+              "title": "ports",
               "type": "object"
             },
             "nodeSelector": {
@@ -12571,6 +12601,18 @@
                   "title": "enabled",
                   "type": "boolean"
                 },
+                "dataPath": {
+                  "default": "/var/lib/ldap",
+                  "required": [],
+                  "title": "dataPath",
+                  "type": "string"
+                },
+                "configPath": {
+                  "default": "/etc/ldap/slapd.d",
+                  "required": [],
+                  "title": "configPath",
+                  "type": "string"
+                },
                 "size": {
                   "required": [],
                   "title": "size",
@@ -12583,12 +12625,6 @@
                     "string",
                     "null"
                   ]
-                },
-                "path": {
-                  "default": "/bitnami/openldap",
-                  "required": [],
-                  "title": "path",
-                  "type": "string"
                 }
               },
               "required": [],

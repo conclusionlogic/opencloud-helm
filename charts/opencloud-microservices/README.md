@@ -6,7 +6,7 @@ Welcome to the **OpenCloud Helm Charts** repository! This repository is intended
 
 ## ⚠️ IMPORTANT: Architectural Considerations
 
-This chart implements a **pod-per-service architecture** where each OpenCloud service runs in its own Kubernetes pod. 
+This chart implements a **pod-per-service architecture** where each OpenCloud service runs in its own Kubernetes pod.
 
 
 ### Problems with Pod-Per-Service:
@@ -269,7 +269,7 @@ The following diagram shows how the different components interact with each othe
 ```mermaid
 graph TD
     User[User Browser] -->|Accesses| Gateway[Gateway API]
-    
+
     subgraph "OpenCloud System"
         Gateway -->|cloud.opencloud.test| OpenCloud[OpenCloud Pod]
         Gateway -->|collabora.opencloud.test| Collabora[Collabora Pod]
@@ -278,27 +278,27 @@ graph TD
         Gateway -->|wopiserver.opencloud.test| Collaboration
         Gateway -->|keycloak.opencloud.test| Keycloak[Keycloak Pod]
         Gateway -->|minio.opencloud.test| MinIO[MinIO Pod]
-        
+
         OpenCloud -->|Authentication| Keycloak
         OpenCloud -->|File Storage| MinIO
         OpenCloud -->|Messaging| NATS[NATS]
         OpenCloud -->|User/Group Management| OpenLDAP[OpenLDAP]
-        
+
         Collabora -->|WOPI Protocol| Collaboration
         OnlyOffice -->|WOPI Protocol| Collaboration
         Collaboration -->|File Access| MinIO
-        
+
         Collaboration -->|Authentication| Keycloak
-        
+
         OpenCloud -->|Collaboration API| Collaboration
-        
+
         OnlyOffice -->|Database| PostgreSQL[PostgreSQL]
         OnlyOffice -->|Cache| Redis[Redis]
         OnlyOffice -->|Message Queue| RabbitMQ[RabbitMQ]
     end
-    
+
     Keycloak -->|User Federation| OpenLDAP
-    
+
     classDef pod fill:#f9f,stroke:#333,stroke-width:2px;
     classDef gateway fill:#bbf,stroke:#333,stroke-width:2px;
     classDef user fill:#bfb,stroke:#333,stroke-width:2px;
@@ -316,7 +316,7 @@ graph TD
 
 Key interactions:
 
-1. **User to Gateway**: 
+1. **User to Gateway**:
    - Users access all services through the Gateway API using different hostnames
 
 2. **OpenCloud Pod**:

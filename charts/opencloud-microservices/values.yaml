@@ -972,7 +972,7 @@ features:
     # Note: Enabling `roleAssignment` will disable `adminUUID`.
     adminUUID: "0ab77e6d-23b4-4ba3-9843-a3b3efdcfc53"
     # Autoprovisioning of user accounts via OIDC
-    autoprovisionAccounts: 
+    autoprovisionAccounts:
       # @schema
       # type: boolean
       # required: true
@@ -1157,7 +1157,7 @@ features:
       # @schema
       # -- If the LDAP server is set to writable in general, some user attributes can be restricted to read only in the UI.
       # Note: This only disables editing in the UI. The readonly permissions need to be enforced in the LDAP server itself.
-      readOnlyAttributes: 
+      readOnlyAttributes:
       - user.onPremisesSamAccountName # username
       - user.displayName # display name
       - user.mail # mail
@@ -3045,7 +3045,7 @@ services:
       # @schema
       # -- Storage class to use.
       # Uses the default storage class if not set.
-      storageClassName: 
+      storageClassName:
       # @schema
       # type: array
       # items:
@@ -3230,7 +3230,7 @@ services:
       # @schema
       # -- Storage class to use.
       # Uses the default storage class if not set.
-      storageClassName: 
+      storageClassName:
       # @schema
       # type: array
       # items:
@@ -3254,7 +3254,7 @@ services:
       # $ref: schema/templates.json#/annotationsTemplate
       # @schema
       # -- Persistent volume annotations.
-      annotations: 
+      annotations:
         helm.sh/resource-policy: keep
       # @schema
       # $ref: schema/templates.json#/finalizersTemplate
@@ -3562,7 +3562,7 @@ services:
       # @schema
       # -- Storage class to use.
       # Uses the default storage class if not set.
-      storageClassName: 
+      storageClassName:
       # @schema
       # type: array
       # items:
@@ -3586,8 +3586,8 @@ services:
       # $ref: schema/templates.json#/annotationsTemplate
       # @schema
       # -- Persistent volume annotations.
-      annotations: 
-        helm.sh/resource-policy: keep     
+      annotations:
+        helm.sh/resource-policy: keep
       # @schema
       # $ref: schema/templates.json#/finalizersTemplate
       # @schema
@@ -3959,7 +3959,7 @@ services:
       # @schema
       # -- Storage class to use.
       # Uses the default storage class if not set.
-      storageClassName: 
+      storageClassName:
       # @schema
       # type: array
       # items:
@@ -3983,7 +3983,7 @@ services:
       # $ref: schema/templates.json#/annotationsTemplate
       # @schema
       # -- Persistent volume annotations.
-      annotations: 
+      annotations:
         helm.sh/resource-policy: keep
       # @schema
       # $ref: schema/templates.json#/finalizersTemplate
@@ -4441,7 +4441,7 @@ services:
       # @schema
       # -- Storage class to use.
       # Uses the default storage class if not set.
-      storageClassName: 
+      storageClassName:
       # @schema
       # type: array
       # items:
@@ -4465,7 +4465,7 @@ services:
       # $ref: schema/templates.json#/annotationsTemplate
       # @schema
       # -- Persistent volume annotations.
-      annotations: 
+      annotations:
         helm.sh/resource-policy: keep
       # @schema
       # $ref: schema/templates.json#/finalizersTemplate
@@ -4624,7 +4624,7 @@ services:
           # type: [string, null]
           # required: false
           # @schema
-          # -- S3 endpoint to use for the DECOMPOSEDS3 driver. Only used if driver is set to "decomposeds3". 
+          # -- S3 endpoint to use for the DECOMPOSEDS3 driver. Only used if driver is set to "decomposeds3".
           endpoint:
           # @schema
           # type: string
@@ -4676,7 +4676,7 @@ services:
             # required: true
             # @schema
             # -- Part size for concurrent uploads to S3.
-            partSize: 134217728 
+            partSize: 134217728
 
     maintenance:
       # Expired uploads can be cleaned up automatically by enabling the clean up job.
@@ -4861,7 +4861,7 @@ services:
       # $ref: schema/templates.json#/annotationsTemplate
       # @schema
       # -- Persistent volume annotations.
-      annotations: 
+      annotations:
         helm.sh/resource-policy: keep
       # @schema
       # $ref: schema/templates.json#/finalizersTemplate
@@ -5047,7 +5047,7 @@ services:
       # $ref: schema/templates.json#/annotationsTemplate
       # @schema
       # -- Persistent volume annotations.
-      annotations: 
+      annotations:
         helm.sh/resource-policy: keep
       # @schema
       # $ref: schema/templates.json#/finalizersTemplate
@@ -5600,7 +5600,7 @@ services:
       # $ref: schema/templates.json#/annotationsTemplate
       # @schema
       # -- Persistent volume annotations.
-      annotations: 
+      annotations:
         helm.sh/resource-policy: keep
       # @schema
       # $ref: schema/templates.json#/finalizersTemplate
@@ -5829,6 +5829,9 @@ services:
   openldap:
     # Enable LDAP
     enabled: true
+    # LDAP domain and organisation
+    domain: opencloud.eu
+    organisation: OpenCloud
     # LDAP image settings
     image:
       # LDAP image registry
@@ -5839,6 +5842,10 @@ services:
       tag: 2.6-amd64
       # Image pull policy
       pullPolicy: IfNotPresent
+    # Service ports
+    ports:
+      ldap: 389
+      ldaps: 636
 
     # Admin password
     adminPassword: adminpass
@@ -5852,8 +5859,9 @@ services:
       storageClass: ""
       # Access mode
       accessMode: ReadWriteOnce
-      # Data path inside the container
-      path: /bitnami/openldap
+      # Data and config paths inside the container
+      dataPath: /var/lib/ldap
+      configPath: /etc/ldap/slapd.d
 
     # Resources allocation
     resources:
@@ -6193,7 +6201,7 @@ onlyoffice:
               # @schema
               # -- Template
               template: "*.xml"
-              
+
 # Collabora configuration
 collabora:
   # @schema
@@ -6560,7 +6568,7 @@ minio:
         memory: 128Mi
 
 
-# Internal Test Keycloak 
+# Internal Test Keycloak
 keycloak:
   # @schema
   # type: boolean

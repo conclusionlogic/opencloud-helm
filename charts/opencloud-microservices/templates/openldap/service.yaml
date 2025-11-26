@@ -14,11 +14,11 @@ spec:
   selector:
     app: {{ .appName }}
   ports:
-    - port: 1389
+    - port: {{ $openldap.ports.ldap | default 389 }}
       targetPort: ldap
       protocol: TCP
       name: ldap
-    - port: 1636
+    - port: {{ $openldap.ports.ldaps | default 636 }}
       targetPort: ldaps
       protocol: TCP
       name: ldaps
