@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "opencloud.openldap.fullname" . }}
+  name: {{ include "oc.openldap.fullname" . }}
   labels:
     {{- include "opencloud.labels" . | nindent 4 }}
     app.kubernetes.io/component: openldap
@@ -44,7 +44,7 @@ spec:
             - name: LDAP_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secretRefs.ldapSecretRef | default (include "opencloud.openldap.fullname" .) }}
+                  name: {{ .Values.secretRefs.ldapSecretRef | default (include "oc.openldap.fullname" .) }}
                   key: adminPassword
             - name: LDAP_CUSTOM_LDIF_DIR
               value: "/custom-ldifs"
@@ -69,10 +69,10 @@ spec:
       volumes:
         - name: custom-ldif
           configMap:
-            name: {{ include "opencloud.openldap.fullname" . }}-config
+            name: {{ include "oc.openldap.fullname" . }}-config
         {{- if .Values.ldap.persistence.enabled }}
         - name: data
           persistentVolumeClaim:
-            claimName: {{ include "opencloud.openldap.fullname" . }}-data
+            claimName: {{ include "oc.openldap.fullname" . }}-data
         {{- end }}
 {{- end }}
