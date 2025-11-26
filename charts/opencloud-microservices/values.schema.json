@@ -12608,7 +12608,7 @@
                   "type": "string"
                 },
                 "configPath": {
-                  "default": "/etc/ldap/slapd.d",
+                  "default": "/etc/openldap/slapd.conf",
                   "required": [],
                   "title": "configPath",
                   "type": "string"

@@ -57,8 +57,9 @@ spec:
               subPath: data
               readOnly: false
             - name: data
-              mountPath: {{ $openldap.persistence.configPath | default "/etc/ldap/slapd.d" | quote }}
+              mountPath: {{ $openldap.persistence.configPath | default "/etc/openldap/slapd.conf" | quote }}
               subPath: config
+              readOnly: false
             {{- end }}
           resources:
             {{- toYaml .resources | nindent 12 }}
