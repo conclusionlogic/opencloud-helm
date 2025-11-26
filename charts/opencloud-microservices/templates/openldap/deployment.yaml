@@ -18,7 +18,7 @@ spec:
           imagePullPolicy: {{ $openldap.image.pullPolicy | default "IfNotPresent" }}
           securityContext:
             allowPrivilegeEscalation: true
-            readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: false
             runAsNonRoot: false
             runAsUser: 0
             runAsGroup: 0
