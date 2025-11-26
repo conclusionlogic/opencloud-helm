@@ -1,29 +1,24 @@
-{{- if .Values.ldap.enabled }}
+{{- include "oc.basicServiceTemplates" (dict "scope" . "appName" "appNameOpenldap" "appNameSuffix" "") -}}
+{{- $openldap := .Values.services.openldap }}
+{{- if $openldap.enabled }}
 apiVersion: apps/v1
 kind: Deployment
-metadata:
-  name: {{ include "oc.openldap.fullname" . }}
-  labels:
-    {{- include "oc.labels" . | nindent 4 }}
-    app.kubernetes.io/component: openldap
+{{ include "oc.metadata" . }}
 spec:
+  {{- include "oc.selector" . | nindent 2 }}
   replicas: 1
-  selector:
-    matchLabels:
-      {{- include "oc.selectorLabels" . | nindent 6 }}
-      app.kubernetes.io/component: openldap
   strategy:
     type: Recreate
   template:
-    metadata:
-      labels:
-        {{- include "oc.selectorLabels" . | nindent 8 }}
-        app.kubernetes.io/component: openldap
+    {{- include "oc.templateMetadata" (dict "scope" $ "configCheck" false) | nindent 4 }}
     spec:
       containers:
-        - name: openldap
-          image: {{ include "oc.image" (dict "imageValues" .Values.ldap.image "global" .Values.global "context" .) | quote }}
-          imagePullPolicy: {{ include "oc.image.pullPolicy" (dict "pullPolicy" .Values.ldap.image.pullPolicy "global" .Values.global "context" .) }}
+        - name: {{ .appName }}
+          {{- $registry := $openldap.image.registry | default "docker.io" -}}
+          {{- $repository := $openldap.image.repository | default "cleanstart/openldap" -}}
+          {{- $tag := $openldap.image.tag | default "2.6-amd64" -}}
+          image: "{{ $registry }}/{{ $repository }}:{{ $tag }}"
+          imagePullPolicy: {{ $openldap.image.pullPolicy | default "IfNotPresent" }}
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -44,7 +39,7 @@ spec:
             - name: LDAP_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secretRefs.ldapSecretRef | default (include "oc.openldap.fullname" .) }}
+                  name: {{ .Values.secretRefs.ldapSecretRef | default .appName }}
                   key: adminPassword
             - name: LDAP_CUSTOM_LDIF_DIR
               value: "/custom-ldifs"
@@ -60,19 +55,19 @@ spec:
             - name: custom-ldif
               mountPath: /custom-ldifs/10_base.ldif
               subPath: 10_base.ldif
-            {{- if .Values.ldap.persistence.enabled }}
+            {{- if $openldap.persistence.enabled }}
             - name: data
-              mountPath: /bitnami/openldap
+              mountPath: {{ $openldap.persistence.path | default "/bitnami/openldap" | quote }}
             {{- end }}
           resources:
-            {{- toYaml .Values.ldap.resources | nindent 12 }}
+            {{- toYaml .resources | nindent 12 }}
       volumes:
         - name: custom-ldif
           configMap:
-            name: {{ include "oc.openldap.fullname" . }}-config
-        {{- if .Values.ldap.persistence.enabled }}
+            name: {{ .appName }}-config
+        {{- if $openldap.persistence.enabled }}
         - name: data
           persistentVolumeClaim:
-            claimName: {{ include "oc.openldap.fullname" . }}-data
+            claimName: {{ .appName }}-data
         {{- end }}
 {{- end }}

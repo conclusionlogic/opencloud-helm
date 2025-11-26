@@ -1,13 +1,18 @@
-{{- if .Values.ldap.enabled }}
+{{- include "oc.basicServiceTemplates" (dict "scope" . "appName" "appNameOpenldap" "appNameSuffix" "") -}}
+{{- $openldap := .Values.services.openldap }}
+{{- if $openldap.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "oc.openldap.fullname" . }}
+  name: {{ .appName }}
+  namespace: {{ template "oc.namespace" . }}
   labels:
+    app: {{ .appName }}
     {{- include "oc.labels" . | nindent 4 }}
-    app.kubernetes.io/component: openldap
 spec:
   type: ClusterIP
+  selector:
+    app: {{ .appName }}
   ports:
     - port: 1389
       targetPort: ldap
@@ -17,7 +22,4 @@ spec:
       targetPort: ldaps
       protocol: TCP
       name: ldaps
-  selector:
-    {{- include "oc.selectorLabels" . | nindent 4 }}
-    app.kubernetes.io/component: openldap
 {{- end }}

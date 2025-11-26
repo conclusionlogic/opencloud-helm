@@ -12355,6 +12355,253 @@
           "title": "webdav",
           "type": "object"
         },
+        "openldap": {
+          "additionalProperties": false,
+          "description": "OPENLDAP service.",
+          "properties": {
+            "affinity": {
+              "additionalProperties": true,
+              "description": "Per-service affinity.",
+              "required": [],
+              "title": "affinity",
+              "type": "object"
+            },
+            "autoscaling": {
+              "additionalProperties": true,
+              "description": "Per-service autoscaling. Overrides the default setting from `autoscaling` if set.",
+              "properties": {
+                "enabled": {
+                  "required": [],
+                  "type": "boolean"
+                },
+                "maxReplicas": {
+                  "minimum": 1,
+                  "required": [],
+                  "type": "integer"
+                },
+                "metrics": {
+                  "additionalProperties": true,
+                  "required": []
+                },
+                "minReplicas": {
+                  "minimum": 1,
+                  "required": [],
+                  "type": "integer"
+                }
+              },
+              "required": [],
+              "title": "autoscaling",
+              "type": "object"
+            },
+            "extraLabels": {
+              "additionalProperties": false,
+              "description": "Per-service custom labels",
+              "patternProperties": {
+                ".*": {
+                  "required": [],
+                  "type": "string"
+                }
+              },
+              "required": [],
+              "title": "extraLabels",
+              "type": "object"
+            },
+            "image": {
+              "additionalProperties": false,
+              "description": "OpenLDAP image configuration.",
+              "properties": {
+                "pullPolicy": {
+                  "description": "Image pull policy",
+                  "required": [],
+                  "title": "pullPolicy",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "registry": {
+                  "default": "docker.io",
+                  "description": "OpenLDAP image registry",
+                  "required": [],
+                  "title": "registry",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "repository": {
+                  "default": "cleanstart/openldap",
+                  "description": "OpenLDAP image repository",
+                  "required": [],
+                  "title": "repository",
+                  "type": "string"
+                },
+                "tag": {
+                  "default": "2.6-amd64",
+                  "description": "OpenLDAP image tag",
+                  "required": [],
+                  "title": "tag",
+                  "type": "string"
+                }
+              },
+              "required": [],
+              "title": "image",
+              "type": "object"
+            },
+            "nodeSelector": {
+              "additionalProperties": false,
+              "description": "Per-service nodeSelector configuration. Overrides the default setting from `nodeSelector` if set.",
+              "patternProperties": {
+                ".*": {
+                  "required": [],
+                  "type": "string"
+                }
+              },
+              "required": [],
+              "title": "nodeSelector",
+              "type": "object"
+            },
+            "podDisruptionBudget": {
+              "additionalProperties": false,
+              "description": "Per-service PodDisruptionBudget. Overrides the default setting from `podDisruptionBudget` if set.",
+              "properties": {
+                "maxUnavailable": {
+                  "oneOf": [
+                    {
+                      "required": [],
+                      "type": "integer"
+                    },
+                    {
+                      "required": [],
+                      "type": "string"
+                    }
+                  ],
+                  "required": []
+                },
+                "minAvailable": {
+                  "oneOf": [
+                    {
+                      "required": [],
+                      "type": "integer"
+                    },
+                    {
+                      "required": [],
+                      "type": "string"
+                    }
+                  ],
+                  "required": []
+                }
+              },
+              "required": [],
+              "title": "podDisruptionBudget",
+              "type": "object"
+            },
+            "priorityClassName": {
+              "default": "",
+              "description": "Per-service priorityClassName configuration. Overrides the default setting from `priorityClassName` if set.",
+              "required": [],
+              "title": "priorityClassName",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "resources": {
+              "additionalProperties": false,
+              "description": "Per-service resources configuration. Overrides the default setting from `resources` if set.",
+              "properties": {
+                "limits": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "cpu": {
+                      "required": [],
+                      "type": "string"
+                    },
+                    "memory": {
+                      "required": [],
+                      "type": "string"
+                    }
+                  },
+                  "required": [],
+                  "type": "object"
+                },
+                "requests": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "cpu": {
+                      "required": [],
+                      "type": "string"
+                    },
+                    "memory": {
+                      "required": [],
+                      "type": "string"
+                    }
+                  },
+                  "required": [],
+                  "type": "object"
+                }
+              },
+              "required": [],
+              "title": "resources",
+              "type": "object"
+            },
+            "enabled": {
+              "default": true,
+              "description": "Enable OpenLDAP service",
+              "required": [],
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "adminPassword": {
+              "description": "LDAP admin password",
+              "required": [],
+              "title": "adminPassword",
+              "type": "string"
+            },
+            "persistence": {
+              "additionalProperties": false,
+              "properties": {
+                "accessMode": {
+                  "required": [],
+                  "title": "accessMode",
+                  "type": "string"
+                },
+                "enabled": {
+                  "required": [],
+                  "title": "enabled",
+                  "type": "boolean"
+                },
+                "size": {
+                  "required": [],
+                  "title": "size",
+                  "type": "string"
+                },
+                "storageClass": {
+                  "required": [],
+                  "title": "storageClass",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "path": {
+                  "default": "/bitnami/openldap",
+                  "required": [],
+                  "title": "path",
+                  "type": "string"
+                }
+              },
+              "required": [],
+              "title": "persistence",
+              "type": "object"
+            }
+          },
+          "required": [
+            "image"
+          ],
+          "title": "openldap",
+          "type": "object"
+        },
         "webfinger": {
           "additionalProperties": false,
           "description": "WEBFINGER service.",
@@ -12576,6 +12823,7 @@
         "groups",
         "idm",
         "idp",
+        "openldap",
         "nats",
         "notifications",
         "ocdav",
@@ -13372,64 +13620,6 @@
         }
       },
       "type": "object"
-    },
-    "ldap": {
-      "additionalProperties": false,
-      "description": "LDAP configuration",
-      "properties": {
-        "enabled": {
-          "type": "boolean",
-          "default": false,
-          "description": "Enable OpenLDAP service"
-        },
-        "image": {
-          "additionalProperties": false,
-          "properties": {
-            "registry": {
-              "type": "string"
-            },
-            "repository": {
-              "type": "string"
-            },
-            "tag": {
-              "type": "string"
-            },
-            "pullPolicy": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "adminPassword": {
-          "type": "string"
-        },
-        "persistence": {
-          "additionalProperties": false,
-          "properties": {
-            "enabled": {
-              "type": "boolean"
-            },
-            "size": {
-              "type": "string"
-            },
-            "storageClass": {
-              "type": [
-                "string",
-                "null"
-              ]
-            },
-            "accessMode": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "resources": {
-          "type": "object",
-          "additionalProperties": true
-        }
-      },
-      "type": "object"
     }
   },
   "required": [
@@ -13463,8 +13653,7 @@
     "onlyoffice",
     "tika",
     "minio",
-    "keycloak",
-    "ldap"
+    "keycloak"
   ],
   "type": "object"
 }

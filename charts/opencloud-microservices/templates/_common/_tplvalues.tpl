@@ -99,6 +99,7 @@ Adds the app names to the scope and set the name of the app based on the input p
   {{- $_ := set .scope "appNameIdp" "idp" -}}
   {{- $_ := set .scope "appNameKeycloak" "keycloak" -}}
   {{- $_ := set .scope "appNameKeycloakPG" "keycloak-postgresql" -}}
+  {{- $_ := set .scope "appNameOpenldap" "openldap" -}}
   {{- $_ := set .scope "appNameMinio" "minio" -}}
   {{- $_ := set .scope "appNameNats" "nats" -}}
   {{- $_ := set .scope "appNameNotifications" "notifications" -}}

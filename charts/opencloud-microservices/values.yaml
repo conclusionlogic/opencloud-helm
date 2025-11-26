@@ -5824,6 +5824,46 @@ services:
       # -- Image pull policy
       pullPolicy:
 
+  # -- OPENLDAP service.
+  # Internal identity management (LDAP)
+  openldap:
+    # Enable LDAP
+    enabled: true
+    # LDAP image settings
+    image:
+      # LDAP image registry
+      registry: docker.io
+      # LDAP image repository
+      repository: cleanstart/openldap
+      # LDAP image tag
+      tag: 2.6-amd64
+      # Image pull policy
+      pullPolicy: IfNotPresent
+
+    # Admin password
+    adminPassword: adminpass
+
+    # Persistence configuration
+    persistence:
+      enabled: true
+      # Size of the persistent volume
+      size: 1Gi
+      # Storage class
+      storageClass: ""
+      # Access mode
+      accessMode: ReadWriteOnce
+      # Data path inside the container
+      path: /bitnami/openldap
+
+    # Resources allocation
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+
 # Service monitoring configuration. Requires the monitoring.coreos.com/v1 CRDs to be installed.
 monitoring:
   # @schema
@@ -6659,44 +6699,5 @@ keycloak:
     # type: string
     # required: true
     # @schema
-    # -- Keycloak client ID
+# -- Keycloak client ID
     clientId: "web"
-
-
-# Internal identity management (LDAP)
-# =====================================================================
-ldap:
-  # Enable LDAP
-  enabled: false
-  # LDAP image settings
-  image:
-    # LDAP image registry
-    registry: docker.io
-    # LDAP image repository
-    repository: bitnami/openldap
-    # LDAP image tag
-    tag: "2.6"
-    # Image pull policy
-    pullPolicy: IfNotPresent
-
-  # Admin password
-  adminPassword: adminpass
-
-  # Persistence configuration
-  persistence:
-    enabled: true
-    # Size of the persistent volume
-    size: 1Gi
-    # Storage class
-    storageClass: ""
-    # Access mode
-    accessMode: ReadWriteOnce
-
-  # Resources allocation
-  resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
-    limits:
-      cpu: 500m
-      memory: 512Mi

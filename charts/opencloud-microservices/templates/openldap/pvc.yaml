@@ -1,24 +1,27 @@
-{{- if .Values.ldap.persistence.enabled }}
+{{- include "oc.basicServiceTemplates" (dict "scope" . "appName" "appNameOpenldap" "appNameSuffix" "") -}}
+{{- $openldap := .Values.services.openldap }}
+{{- if and $openldap.enabled $openldap.persistence.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ include "oc.openldap.fullname" . }}-data
+  name: {{ .appName }}-data
+  namespace: {{ template "oc.namespace" . }}
   annotations:
     "helm.sh/resource-policy": "keep"
   labels:
+    app: {{ .appName }}
     {{- include "oc.labels" . | nindent 4 }}
-    app.kubernetes.io/component: openldap
 spec:
   accessModes:
-    - {{ .Values.ldap.persistence.accessMode | quote }}
+    - {{ $openldap.persistence.accessMode | quote }}
   resources:
     requests:
-      storage: {{ .Values.ldap.persistence.size | quote }}
-  {{- if .Values.ldap.persistence.storageClass }}
-  {{- if (eq "-" .Values.ldap.persistence.storageClass) }}
+      storage: {{ $openldap.persistence.size | quote }}
+  {{- if $openldap.persistence.storageClass }}
+  {{- if (eq "-" $openldap.persistence.storageClass) }}
   storageClassName: ""
   {{- else }}
-  storageClassName: {{ .Values.ldap.persistence.storageClass | quote }}
+  storageClassName: {{ $openldap.persistence.storageClass | quote }}
   {{- end }}
   {{- end }}
 {{- end }}

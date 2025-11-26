@@ -1,11 +1,14 @@
-{{- if .Values.ldap.enabled }}
+{{- include "oc.basicServiceTemplates" (dict "scope" . "appName" "appNameOpenldap" "appNameSuffix" "") -}}
+{{- $openldap := .Values.services.openldap }}
+{{- if $openldap.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "oc.openldap.fullname" . }}-config
+  name: {{ .appName }}-config
+  namespace: {{ template "oc.namespace" . }}
   labels:
+    app: {{ .appName }}
     {{- include "oc.labels" . | nindent 4 }}
-    app.kubernetes.io/component: openldap
 data:
   10_opencloud_schema.ldif: |-
 {{ .Files.Get "files/openldap/schemas/10_opencloud_schema.ldif" | nindent 4 }}
