@@ -22,8 +22,8 @@ spec:
     spec:
       containers:
         - name: openldap
-          image: {{ include "oc.image" (dict "imageValues" .Values.ldap.image "global" .Values.global) | quote }}
-          imagePullPolicy: {{ include "oc.image.pullPolicy" (dict "pullPolicy" .Values.ldap.image.pullPolicy "global" .Values.global) }}
+          image: {{ include "oc.image" (dict "imageValues" .Values.ldap.image "global" .Values.global "context" .) | quote }}
+          imagePullPolicy: {{ include "oc.image.pullPolicy" (dict "pullPolicy" .Values.ldap.image.pullPolicy "global" .Values.global "context" .) }}
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:

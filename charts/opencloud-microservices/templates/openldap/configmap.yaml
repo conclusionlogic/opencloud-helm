@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: {{ include "oc.openldap.fullname" . }}-config
   labels:
-    {{- include "opencloud.labels" . | nindent 4 }}
+    {{- include "oc.labels" . | nindent 4 }}
     app.kubernetes.io/component: openldap
 data:
   10_opencloud_schema.ldif: |-
