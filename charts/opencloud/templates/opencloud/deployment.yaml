@@ -152,7 +152,7 @@ spec:
             {{- if .Values.opencloud.nats.external.enabled }}
               {{- $exclude = append $exclude "nats" }}
             {{- end }}
-            {{- if .Values.ldap.internal.enabled }}
+            {{- if .Values.ldap.enabled }}
               {{- $exclude = append $exclude "idm" }}
             {{- end }}
             {{- if gt (len $exclude) 0 }}
@@ -273,7 +273,7 @@ spec:
               value: "openid profile email groups roles"
             {{- end }}
 
-            {{- if .Values.ldap.internal.enabled }}
+            {{- if .Values.ldap.enabled }}
             # opencloud manages the ldap server, it is considered writable
             - name: OC_LDAP_URI
               value: "ldap://{{ include "opencloud.openldap.fullname" . }}:1389"

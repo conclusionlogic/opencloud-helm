@@ -1,4 +1,4 @@
-{{- if .Values.ldap.internal.enabled }}
+{{- if .Values.ldap.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,8 +22,8 @@ spec:
     spec:
       containers:
         - name: openldap
-          image: {{ include "opencloud.image" (dict "imageValues" .Values.ldap.internal.image "global" .Values.global) | quote }}
-          imagePullPolicy: {{ include "opencloud.image.pullPolicy" (dict "pullPolicy" .Values.ldap.internal.image.pullPolicy "global" .Values.global) }}
+          image: {{ include "opencloud.image" (dict "imageValues" .Values.ldap.image "global" .Values.global) | quote }}
+          imagePullPolicy: {{ include "opencloud.image.pullPolicy" (dict "pullPolicy" .Values.ldap.image.pullPolicy "global" .Values.global) }}
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -44,7 +44,7 @@ spec:
             - name: LDAP_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.ldap.internal.existingSecret | default (include "opencloud.openldap.fullname" .) }}
+                  name: {{ .Values.ldap.existingSecret | default (include "opencloud.openldap.fullname" .) }}
                   key: adminPassword
             - name: LDAP_CUSTOM_LDIF_DIR
               value: "/custom-ldifs"
@@ -63,17 +63,17 @@ spec:
             #- name: custom-ldif
             #  mountPath: /ldifs/20_admin.ldif
             #  subPath: 20_admin.ldif
-            {{- if .Values.ldap.internal.persistence.enabled }}
+            {{- if .Values.ldap.persistence.enabled }}
             - name: data
               mountPath: /bitnami/openldap
             {{- end }}
           resources:
-            {{- toYaml .Values.ldap.internal.resources | nindent 12 }}
+            {{- toYaml .Values.ldap.resources | nindent 12 }}
       volumes:
         - name: custom-ldif
           configMap:
             name: {{ include "opencloud.openldap.fullname" . }}-config
-        {{- if .Values.ldap.internal.persistence.enabled }}
+        {{- if .Values.ldap.persistence.enabled }}
         - name: data
           persistentVolumeClaim:
             claimName: {{ include "opencloud.openldap.fullname" . }}-data

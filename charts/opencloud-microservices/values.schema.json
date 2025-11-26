@@ -13377,65 +13377,56 @@
       "additionalProperties": false,
       "description": "LDAP configuration",
       "properties": {
-        "internal": {
+        "enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable OpenLDAP service"
+        },
+        "image": {
           "additionalProperties": false,
           "properties": {
-            "enabled": {
-              "type": "boolean",
-              "default": false,
-              "description": "Enable OpenLDAP service"
-            },
-            "image": {
-              "additionalProperties": false,
-              "properties": {
-                "registry": {
-                  "type": "string"
-                },
-                "repository": {
-                  "type": "string"
-                },
-                "tag": {
-                  "type": "string"
-                },
-                "pullPolicy": {
-                  "type": "string"
-                }
-              },
-              "type": "object"
-            },
-            "existingSecret": {
+            "registry": {
               "type": "string"
             },
-            "adminPassword": {
+            "repository": {
               "type": "string"
             },
-            "persistence": {
-              "additionalProperties": false,
-              "properties": {
-                "enabled": {
-                  "type": "boolean"
-                },
-                "size": {
-                  "type": "string"
-                },
-                "storageClass": {
-                  "type": [
-                    "string",
-                    "null"
-                  ]
-                },
-                "accessMode": {
-                  "type": "string"
-                }
-              },
-              "type": "object"
+            "tag": {
+              "type": "string"
             },
-            "resources": {
-              "type": "object",
-              "additionalProperties": true
+            "pullPolicy": {
+              "type": "string"
             }
           },
           "type": "object"
+        },
+        "adminPassword": {
+          "type": "string"
+        },
+        "persistence": {
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "size": {
+              "type": "string"
+            },
+            "storageClass": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "accessMode": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "resources": {
+          "type": "object",
+          "additionalProperties": true
         }
       },
       "type": "object"

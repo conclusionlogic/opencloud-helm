@@ -132,7 +132,7 @@ This repository contains the following chart:
 - NATS service discovery required
 - Keycloak for authentication
 - MinIO for object storage
-- Integrated OpenLDAP 
+- Integrated LDAP
 - Integrated ClamAV
 - Posix support
 - Helm and Timoni Chart for FluxCD

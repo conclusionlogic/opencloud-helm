@@ -95,7 +95,7 @@ The complete OpenCloud deployment with all components for production use:
 - NATS service discovery required
 - Keycloak for authentication
 - MinIO for object storage
-- Integrated OpenLDAP 
+- Integrated LDAP
 - Integrated ClamAV
 - Posix support
 - Helm and Timoni Chart for FluxCD

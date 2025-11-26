@@ -1,4 +1,4 @@
-{{- if .Values.ldap.internal.persistence.enabled }}
+{{- if .Values.ldap.persistence.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -10,15 +10,15 @@ metadata:
     app.kubernetes.io/component: openldap
 spec:
   accessModes:
-    - {{ .Values.ldap.internal.persistence.accessMode | quote }}
+    - {{ .Values.ldap.persistence.accessMode | quote }}
   resources:
     requests:
-      storage: {{ .Values.ldap.internal.persistence.size | quote }}
-  {{- if .Values.ldap.internal.persistence.storageClass }}
-  {{- if (eq "-" .Values.ldap.internal.persistence.storageClass) }}
+      storage: {{ .Values.ldap.persistence.size | quote }}
+  {{- if .Values.ldap.persistence.storageClass }}
+  {{- if (eq "-" .Values.ldap.persistence.storageClass) }}
   storageClassName: ""
   {{- else }}
-  storageClassName: {{ .Values.ldap.internal.persistence.storageClass | quote }}
+  storageClassName: {{ .Values.ldap.persistence.storageClass | quote }}
   {{- end }}
   {{- end }}
 {{- end }}
