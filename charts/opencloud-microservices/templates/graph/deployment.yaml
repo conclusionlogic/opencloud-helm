@@ -1,4 +1,5 @@
 {{- include "oc.basicServiceTemplates" (dict "scope" . "appName" "appNameGraph" "appNameSuffix" "") -}}
+{{- $openldap := .Values.services.openldap -}}
 apiVersion: apps/v1
 kind: Deployment
 {{ include "oc.metadata" . }}
@@ -79,10 +80,15 @@ spec:
                   name: {{ include "secrets.ldapBindSecret" . }}
                   key: graph-ldap-bind-password
             {{ else }}
+            {{- $bindDN := default (include "oc.ldapAdminDN" .) .Values.features.externalUserManagement.ldap.bindDN }}
             - name: GRAPH_LDAP_URI
-              value: {{ .Values.features.externalUserManagement.ldap.uri | quote }}
+              {{- $defaultLdapUri := "" -}}
+              {{- if $openldap.enabled -}}
+                {{- $defaultLdapUri = printf "ldaps://%s:%v" .appNameOpenldap ($openldap.ports.ldaps | default 636) -}}
+              {{- end -}}
+              value: {{ default $defaultLdapUri .Values.features.externalUserManagement.ldap.uri | quote }}
             - name: GRAPH_LDAP_BIND_DN
-              value: {{ .Values.features.externalUserManagement.ldap.bindDN | quote }}
+              value: {{ $bindDN | quote }}
             - name: GRAPH_LDAP_BIND_PASSWORD
               valueFrom:
                 secretKeyRef:

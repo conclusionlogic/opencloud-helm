@@ -72,6 +72,21 @@ Create a fully qualified OpenLDAP name.
 {{- printf "%s-openldap" (include "oc.fullname" .) | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
+{{/*
+Compute LDAP base DN and admin DN from domain/adminRDN, with overrides.
+*/}}
+{{- define "oc.ldapBaseDN" -}}
+{{- $domain := default "opencloud.eu" .Values.services.openldap.domain -}}
+{{- $parts := splitList "." $domain -}}
+{{- default (printf "dc=%s" (join ",dc=" $parts)) .Values.ldap.baseDN -}}
+{{- end -}}
+
+{{- define "oc.ldapAdminDN" -}}
+{{- $base := include "oc.ldapBaseDN" . -}}
+{{- $rdn := default "cn=admin" .Values.ldap.adminRDN -}}
+{{- default (printf "%s,%s" $rdn $base) .Values.ldap.adminDN -}}
+{{- end -}}
+
 
 {{/*
 Adds the app names to the scope and set the name of the app based on the input parameters

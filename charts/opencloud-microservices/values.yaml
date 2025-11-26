@@ -499,6 +499,27 @@ hostAliases: []
 #   hostnames:
 #   - oc.kube.opencloud.test
 
+# Shared LDAP identity settings used across services.
+ldap:
+  # @schema
+  # type: [string, null]
+  # required: false
+  # @schema
+  # -- Base DN for LDAP. If empty, derived from services.openldap.domain.
+  baseDN: ""
+  # @schema
+  # type: string
+  # required: true
+  # @schema
+  # -- Admin RDN to prepend to the base DN.
+  adminRDN: cn=admin
+  # @schema
+  # type: [string, null]
+  # required: false
+  # @schema
+  # -- Full admin DN. If empty, composed from adminRDN and baseDN.
+  adminDN: ""
+
 # Feature options.
 # Enable or disable features of OC.
 features:
@@ -959,7 +980,7 @@ features:
     # @schema
     # -- Enables external user management (and disables internal user management).
     # Needs an external OpenID Connect Identity Provider and an external LDAP server.
-    enabled: false
+    enabled: true
     # @schema
     # type: [string, null]
     # required: false
@@ -1170,7 +1191,8 @@ features:
       # required: false
       # @schema
       # -- URI to connect to the LDAP secure server.
-      uri: "ldap://openldap:636"
+      # Defaults to ldaps://<openldap service>:<ldaps port> if left empty.
+      uri: ""
       # @schema
       # type: boolean
       # required: true
@@ -1193,7 +1215,8 @@ features:
       # -- DN of the user to use to bind to the LDAP server.
       # The password for the user needs to be set in the secret referenced by `secretRefs.ldapSecretRef` as `reva-ldap-bind-password`.
       # The user needs to have permission to list users and groups.
-      bindDN: cn=admin,dc=opencloud,dc=eu
+      # Defaults to `ldap.adminDN` if left empty.
+      bindDN: ""
       # @schema
       # type: boolean
       # required: true

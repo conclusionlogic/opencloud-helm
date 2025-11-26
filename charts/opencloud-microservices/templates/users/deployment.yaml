@@ -118,7 +118,11 @@ spec:
             {{ if not .Values.features.externalUserManagement.enabled }}
               value: ldaps://{{ .appNameIdm }}:9235
             {{ else }}
-              value: {{ .Values.features.externalUserManagement.ldap.uri | quote }}
+              {{- $defaultLdapUri := "" -}}
+              {{- if .Values.services.openldap.enabled -}}
+                {{- $defaultLdapUri = printf "ldaps://%s:%v" .appNameOpenldap (.Values.services.openldap.ports.ldaps | default 636) -}}
+              {{- end -}}
+              value: {{ default $defaultLdapUri .Values.features.externalUserManagement.ldap.uri | quote }}
             {{ end }}
 
             - name: USERS_LDAP_CACERT
@@ -129,8 +133,9 @@ spec:
               {{ end }}
 
             {{ if .Values.features.externalUserManagement.enabled }}
+            {{- $bindDN := default (include "oc.ldapAdminDN" .) .Values.features.externalUserManagement.ldap.bindDN }}
             - name: USERS_LDAP_BIND_DN
-              value: {{ .Values.features.externalUserManagement.ldap.bindDN | quote }}
+              value: {{ $bindDN | quote }}
             {{ end }}
 
             - name: USERS_LDAP_BIND_PASSWORD

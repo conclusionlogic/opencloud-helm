@@ -885,7 +885,7 @@
               "properties": {
                 "bindDN": {
                   "default": "",
-                  "description": "DN of the user to use to bind to the LDAP server.\nThe password for the user needs to be set in the secret referenced by `secretRefs.ldapSecretRef` as `reva-ldap-bind-password`.\nThe user needs to have permission to list users and groups.",
+                  "description": "DN of the user to use to bind to the LDAP server. Defaults to ldap.adminDN when empty.\nThe password for the user needs to be set in the secret referenced by `secretRefs.ldapSecretRef` as `reva-ldap-bind-password`.\nThe user needs to have permission to list users and groups.",
                   "required": [],
                   "title": "bindDN",
                   "type": [
@@ -1082,7 +1082,7 @@
                 },
                 "uri": {
                   "default": "",
-                  "description": "- user.onPremisesSamAccountName # username\n- user.displayName # display name\n- user.mail # mail\n- user.passwordProfile # password\n- user.appRoleAssignments # role\n- user.accountEnabled # login allowed\n- drive.quota # quota\nURI to connect to the LDAP secure server.",
+                  "description": "URI to connect to the LDAP secure server. Defaults to ldaps://<openldap service>:<ldaps port> if unset.",
                   "format": "uri",
                   "required": [],
                   "title": "uri",
@@ -2023,6 +2023,44 @@
       "required": [],
       "title": "hostAliases",
       "type": "array"
+    },
+    "ldap": {
+      "additionalProperties": false,
+      "description": "Shared LDAP identity settings used across services.",
+      "properties": {
+        "adminDN": {
+          "default": "",
+          "description": "Full admin DN. If empty, composed from adminRDN and baseDN.",
+          "required": [],
+          "title": "adminDN",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "adminRDN": {
+          "default": "cn=admin",
+          "description": "Admin RDN to prepend to the base DN.",
+          "required": [],
+          "title": "adminRDN",
+          "type": "string"
+        },
+        "baseDN": {
+          "default": "",
+          "description": "Base DN for LDAP. If empty, derived from services.openldap.domain.",
+          "required": [],
+          "title": "baseDN",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "adminRDN"
+      ],
+      "title": "ldap",
+      "type": "object"
     },
     "http": {
       "additionalProperties": false,
@@ -13758,6 +13796,7 @@
     "registry",
     "messagingSystem",
     "hostAliases",
+    "ldap",
     "features",
     "ingress",
     "configRefs",
