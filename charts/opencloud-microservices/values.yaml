@@ -5852,6 +5852,28 @@ services:
       dataPath: /var/lib/ldap
       configPath: /etc/ldap/slapd.d
 
+    # Pod security context tailored for OpenLDAP (matches the user/group the image drops to).
+    podSecurityContext:
+      fsGroup: 102
+      fsGroupChangePolicy: OnRootMismatch
+
+    # Container security context. OpenLDAP needs setuid/setgid to switch to the ldap user inside the image.
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: false
+      runAsNonRoot: false
+      runAsUser: 0
+      runAsGroup: 0
+      capabilities:
+        drop:
+          - ALL
+        add:
+          - NET_BIND_SERVICE
+          - SETGID
+          - SETUID
+      seccompProfile:
+        type: RuntimeDefault
+
     # Resources allocation
     resources:
       requests:

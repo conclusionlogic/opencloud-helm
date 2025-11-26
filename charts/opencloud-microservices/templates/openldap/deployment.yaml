@@ -12,23 +12,16 @@ spec:
   template:
     {{- include "oc.templateMetadata" (dict "scope" $ "configCheck" false) | nindent 4 }}
     spec:
+      {{- with $openldap.podSecurityContext }}
+      securityContext:
+{{ toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .appName }}
           image: "{{ ($openldap.image.registry | default "docker.io") }}/{{ ($openldap.image.repository | default "cleanstart/openldap") }}:{{ ($openldap.image.tag | default "2.6-amd64") }}"
           imagePullPolicy: {{ $openldap.image.pullPolicy | default "IfNotPresent" }}
           securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            runAsNonRoot: true
-            runAsUser: 1000
-            runAsGroup: 1000
-            capabilities:
-              drop:
-                - ALL
-              add:
-                - NET_BIND_SERVICE
-            seccompProfile:
-              type: RuntimeDefault
+{{- toYaml $openldap.securityContext | nindent 12 }}
           env:
             - name: LDAP_ORGANISATION
               value: {{ $openldap.organisation | quote }}

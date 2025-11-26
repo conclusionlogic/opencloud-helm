@@ -12630,6 +12630,91 @@
               "required": [],
               "title": "persistence",
               "type": "object"
+            },
+            "podSecurityContext": {
+              "additionalProperties": false,
+              "description": "Pod-level security context for OpenLDAP.",
+              "properties": {
+                "fsGroup": {
+                  "minimum": 0,
+                  "required": [],
+                  "type": "integer"
+                },
+                "fsGroupChangePolicy": {
+                  "enum": [
+                    "Always",
+                    "OnRootMismatch"
+                  ],
+                  "required": [],
+                  "type": "string"
+                }
+              },
+              "required": [],
+              "title": "podSecurityContext",
+              "type": "object"
+            },
+            "securityContext": {
+              "additionalProperties": false,
+              "description": "Container security context for OpenLDAP.",
+              "properties": {
+                "allowPrivilegeEscalation": {
+                  "required": [],
+                  "type": "boolean"
+                },
+                "capabilities": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "add": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "required": [],
+                      "type": "array"
+                    },
+                    "drop": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "required": [],
+                      "type": "array"
+                    }
+                  },
+                  "required": [],
+                  "type": "object"
+                },
+                "readOnlyRootFilesystem": {
+                  "required": [],
+                  "type": "boolean"
+                },
+                "runAsGroup": {
+                  "minimum": 0,
+                  "required": [],
+                  "type": "integer"
+                },
+                "runAsNonRoot": {
+                  "required": [],
+                  "type": "boolean"
+                },
+                "runAsUser": {
+                  "minimum": 0,
+                  "required": [],
+                  "type": "integer"
+                },
+                "seccompProfile": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "type": {
+                      "required": [],
+                      "type": "string"
+                    }
+                  },
+                  "required": [],
+                  "type": "object"
+                }
+              },
+              "required": [],
+              "title": "securityContext",
+              "type": "object"
             }
           },
           "required": [
