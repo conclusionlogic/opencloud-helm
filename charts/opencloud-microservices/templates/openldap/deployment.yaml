@@ -65,6 +65,8 @@ spec:
               set -eu
               mkdir -p "$LDAP_DATA_DIR"
               chown -R 0:0 "$LDAP_DATA_DIR"
+              mkdir -p /etc/openldap/schema
+              cp /init/10_opencloud_schema.ldif /etc/openldap/schema/10_opencloud_schema.ldif
               if [ -z "$(ls -A "$LDAP_DATA_DIR" 2>/dev/null || true)" ]; then
                 /usr/sbin/slapadd -v -f /render/slapd.conf -l /init/10_base.ldif
                 chown -R 0:0 "$LDAP_DATA_DIR"
@@ -73,6 +75,9 @@ spec:
             - name: custom-ldif
               mountPath: /init/10_base.ldif
               subPath: 10_base.ldif
+            - name: custom-ldif
+              mountPath: /init/10_opencloud_schema.ldif
+              subPath: 10_opencloud_schema.ldif
             - name: slapd-conf-render
               mountPath: /render
             {{- if $openldap.persistence.enabled }}
