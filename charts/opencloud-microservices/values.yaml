@@ -5854,6 +5854,8 @@ services:
       tag: 2.6-amd64
       # Image pull policy
       pullPolicy: IfNotPresent
+    # Additional schema files (present in /etc/openldap/schema) to load.
+    loadSchemas: []
     # Service ports
     ports:
       ldap: 389

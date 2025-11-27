@@ -12500,6 +12500,16 @@
               "title": "image",
               "type": "object"
             },
+            "loadSchemas": {
+              "default": [],
+              "description": "Additional schema file names (located in /etc/openldap/schema) to include.",
+              "items": {
+                "type": "string"
+              },
+              "required": [],
+              "title": "loadSchemas",
+              "type": "array"
+            },
             "ports": {
               "additionalProperties": false,
               "properties": {

@@ -37,21 +37,96 @@ spec:
               containerPort: {{ $openldap.ports.ldap | default 389 }}
             - name: ldaps
               containerPort: {{ $openldap.ports.ldaps | default 636 }}
+      initContainers:
+        - name: init-slapd-conf
+          {{- include "oc.initContainerImage" $ | nindent 10 }}
+          env:
+            - name: LDAP_BASE_DN
+              value: {{ include "oc.ldapBaseDN" . | quote }}
+            - name: LDAP_ROOT_DN
+              value: {{ include "oc.ldapAdminDN" . | quote }}
+            - name: LDAP_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretRefs.ldapSecretRef | default .appName }}
+                  key: reva-ldap-bind-password
+          command: ["/bin/sh","-c"]
+          args:
+            - |
+              set -eu
+              HASH=$(slappasswd -s "$LDAP_ADMIN_PASSWORD")
+              sed -e "s/{{ .LDAP_BASE_DN }}/$LDAP_BASE_DN/g" \
+                  -e "s/{{ .LDAP_ROOT_DN }}/$LDAP_ROOT_DN/g" \
+                  -e "s/{{ .LDAP_ROOTPW_HASH }}/$HASH/g" \
+                  /config/slapd.conf.tpl > /render/slapd.conf
+          volumeMounts:
+            - name: slapd-conf-render
+              mountPath: /render
+            - name: slapd-conf-template
+              mountPath: /config/slapd.conf.tpl
+              subPath: slapd.conf.tpl
+        - name: init-slapadd-base
+          {{- include "oc.initContainerImage" $ | nindent 10 }}
+          env:
+            - name: LDAP_DATA_DIR
+              value: {{ $openldap.persistence.dataPath | default "/var/lib/ldap" | quote }}
+          command: ["/bin/sh","-c"]
+          args:
+            - |
+              set -eu
+              mkdir -p "$LDAP_DATA_DIR"
+              chown -R 0:0 "$LDAP_DATA_DIR"
+              if [ -z "$(ls -A "$LDAP_DATA_DIR" 2>/dev/null || true)" ]; then
+                slapadd -v -f /render/slapd.conf -l /init/10_base.ldif
+                chown -R 0:0 "$LDAP_DATA_DIR"
+              fi
           volumeMounts:
             - name: custom-ldif
-              mountPath: /container/service/slapd/assets/config/bootstrap/schema/custom/10_opencloud_schema.ldif
-              subPath: 10_opencloud_schema.ldif
-            - name: custom-ldif
-              mountPath: /container/service/slapd/assets/config/bootstrap/ldif/custom/10_base.ldif
+              mountPath: /init/10_base.ldif
               subPath: 10_base.ldif
+            - name: slapd-conf-render
+              mountPath: /render
             {{- if $openldap.persistence.enabled }}
             - name: data
               mountPath: {{ $openldap.persistence.dataPath | default "/var/lib/ldap" | quote }}
               subPath: data
-              readOnly: false
+            {{- end }}
+      {{- with $openldap.podSecurityContext }}
+      securityContext:
+{{ toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .appName }}
+          image: "{{ ($openldap.image.registry | default "docker.io") }}/{{ ($openldap.image.repository | default "cleanstart/openldap") }}:{{ ($openldap.image.tag | default "2.6-amd64") }}"
+          imagePullPolicy: {{ $openldap.image.pullPolicy | default "IfNotPresent" }}
+          securityContext:
+{{- toYaml $openldap.securityContext | nindent 12 }}
+          env:
+            - name: LDAP_ORGANISATION
+              value: {{ $openldap.organisation | quote }}
+            - name: LDAP_DOMAIN
+              value: {{ $openldap.domain | quote }}
+            - name: LDAP_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretRefs.ldapSecretRef | default .appName }}
+                  key: reva-ldap-bind-password
+          ports:
+            - name: ldap
+              containerPort: {{ $openldap.ports.ldap | default 389 }}
+            - name: ldaps
+              containerPort: {{ $openldap.ports.ldaps | default 636 }}
+          volumeMounts:
+            - name: slapd-conf-render
+              mountPath: /etc/openldap/slapd.conf
+              subPath: slapd.conf
+            - name: custom-ldif
+              mountPath: /etc/openldap/schema/10_opencloud_schema.ldif
+              subPath: 10_opencloud_schema.ldif
+            {{- if $openldap.persistence.enabled }}
             - name: data
-              mountPath: {{ $openldap.persistence.configPath | default "/etc/ldap/slapd.d" | quote }}
-              subPath: config
+              mountPath: {{ $openldap.persistence.dataPath | default "/var/lib/ldap" | quote }}
+              subPath: data
               readOnly: false
             {{- end }}
           resources:
@@ -60,6 +135,11 @@ spec:
         - name: custom-ldif
           configMap:
             name: {{ .appName }}-config
+        - name: slapd-conf-template
+          configMap:
+            name: {{ .appName }}-slapd-conf
+        - name: slapd-conf-render
+          emptyDir: {}
         {{- if $openldap.persistence.enabled }}
         - name: data
           persistentVolumeClaim:

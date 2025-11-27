@@ -1,0 +1,39 @@
+{{- include "oc.basicServiceTemplates" (dict "scope" . "appName" "appNameOpenldap" "appNameSuffix" "") -}}
+{{- $openldap := .Values.services.openldap }}
+{{- if $openldap.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .appName }}-slapd-conf
+  namespace: {{ template "oc.namespace" . }}
+  labels:
+    app: {{ .appName }}
+    {{- include "oc.labels" . | nindent 4 }}
+data:
+  slapd.conf.tpl: |-
+    include		/etc/openldap/schema/core.schema
+    include		/etc/openldap/schema/cosine.schema
+    include		/etc/openldap/schema/inetorgperson.schema
+    include	 	/etc/openldap/schema/nis.schema
+    include         /etc/openldap/schema/10_opencloud_schema.ldif
+{{- if $openldap.loadSchemas }}
+{{- range $openldap.loadSchemas }}
+    include         /etc/openldap/schema/{{ . }}
+{{- end }}
+{{- end }}
+
+    modulepath	/usr/lib/openldap
+    moduleload	back_mdb.so
+
+    database config
+
+    database	mdb
+    maxsize	1073741824
+    suffix	"{{ `{{` }} .LDAP_BASE_DN {{ `}}` }}"
+    rootdn	"{{ `{{` }} .LDAP_ROOT_DN {{ `}}` }}"
+    rootpw	{{ `{{` }} .LDAP_ROOTPW_HASH {{ `}}` }}
+    directory	{{ $openldap.persistence.dataPath | default "/var/lib/ldap" }}
+    index	objectClass	eq
+
+    database monitor
+{{- end }}
