@@ -31,7 +31,7 @@ data:
     maxsize	1073741824
     suffix	"{{ `{{` }} .LDAP_BASE_DN {{ `}}` }}"
     rootdn	"{{ `{{` }} .LDAP_ROOT_DN {{ `}}` }}"
-    rootpw	{{ `{{` }} .LDAP_ROOTPW_HASH {{ `}}` }}
+    rootpw	{{ `{{` }} .LDAP_ROOTPW {{ `}}` }}
     directory	{{ $openldap.persistence.dataPath | default "/var/lib/ldap" }}
     index	objectClass	eq
 

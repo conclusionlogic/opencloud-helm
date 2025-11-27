@@ -38,10 +38,10 @@ spec:
           args:
             - |
               set -eu
-              HASH=$(slappasswd -s "$LDAP_ADMIN_PASSWORD")
+              HASH=$(/usr/sbin/slappasswd -s "$LDAP_ADMIN_PASSWORD")
               sed -e "s/{{ .LDAP_BASE_DN }}/$LDAP_BASE_DN/g" \
                   -e "s/{{ .LDAP_ROOT_DN }}/$LDAP_ROOT_DN/g" \
-                  -e "s/{{ .LDAP_ROOTPW_HASH }}/$HASH/g" \
+                  -e "s/{{ .LDAP_ROOTPW }}/$HASH/g" \
                   /config/slapd.conf.tpl > /render/slapd.conf
           volumeMounts:
             - name: slapd-conf-render
@@ -66,7 +66,7 @@ spec:
               mkdir -p "$LDAP_DATA_DIR"
               chown -R 0:0 "$LDAP_DATA_DIR"
               if [ -z "$(ls -A "$LDAP_DATA_DIR" 2>/dev/null || true)" ]; then
-                slapadd -v -f /render/slapd.conf -l /init/10_base.ldif
+                /usr/sbin/slapadd -v -f /render/slapd.conf -l /init/10_base.ldif
                 chown -R 0:0 "$LDAP_DATA_DIR"
               fi
           volumeMounts:
