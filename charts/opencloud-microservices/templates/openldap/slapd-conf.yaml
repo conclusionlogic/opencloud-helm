@@ -29,9 +29,9 @@ data:
 
     database	mdb
     maxsize	1073741824
-    suffix	"{{ `{{` }} .LDAP_BASE_DN {{ `}}` }}"
-    rootdn	"{{ `{{` }} .LDAP_ROOT_DN {{ `}}` }}"
-    rootpw	{{ `{{` }} .LDAP_ROOTPW {{ `}}` }}
+    suffix	"__LDAP_BASE_DN__"
+    rootdn	"__LDAP_ROOT_DN__"
+    rootpw	__LDAP_ROOTPW_HASH__
     directory	{{ $openldap.persistence.dataPath | default "/var/lib/ldap" }}
     index	objectClass	eq
 

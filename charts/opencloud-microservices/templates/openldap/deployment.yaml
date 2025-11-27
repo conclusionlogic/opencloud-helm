@@ -39,9 +39,9 @@ spec:
             - |
               set -eu
               HASH=$(/usr/sbin/slappasswd -s "$LDAP_ADMIN_PASSWORD")
-              sed -e "s/{{ .LDAP_BASE_DN }}/$LDAP_BASE_DN/g" \
-                  -e "s/{{ .LDAP_ROOT_DN }}/$LDAP_ROOT_DN/g" \
-                  -e "s/{{ .LDAP_ROOTPW }}/$HASH/g" \
+              sed -e "s|__LDAP_BASE_DN__|$LDAP_BASE_DN|g" \
+                  -e "s|__LDAP_ROOT_DN__|$LDAP_ROOT_DN|g" \
+                  -e "s|__LDAP_ROOTPW_HASH__|$HASH|g" \
                   /config/slapd.conf.tpl > /render/slapd.conf
           volumeMounts:
             - name: slapd-conf-render
