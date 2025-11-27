@@ -15,7 +15,7 @@ data:
     include		/etc/openldap/schema/cosine.schema
     include		/etc/openldap/schema/inetorgperson.schema
     include	 	/etc/openldap/schema/nis.schema
-    include         /etc/openldap/schema/10_opencloud_schema.ldif
+    include         /etc/openldap/schema/10_opencloud.schema
 {{- if $openldap.loadSchemas }}
 {{- range $openldap.loadSchemas }}
     include         /etc/openldap/schema/{{ . }}
