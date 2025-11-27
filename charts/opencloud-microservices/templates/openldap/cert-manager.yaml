@@ -1,0 +1,39 @@
+{{- include "oc.basicServiceTemplates" (dict "scope" . "appName" "appNameOpenldap" "appNameSuffix" "") -}}
+{{- $openldap := .Values.services.openldap }}
+{{- $cm := $openldap.tls.certManager }}
+{{- if and $openldap.enabled .Values.features.externalUserManagement.enabled $cm.enabled }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ printf "%s-ldap" .appName }}
+  namespace: {{ template "oc.namespace" . }}
+  labels:
+    app: {{ .appName }}
+    {{- include "oc.labels" . | nindent 4 }}
+spec:
+  secretName: {{ default (trimAll "\"" (include "secrets.ldapCertSecret" .)) $cm.secretName | quote }}
+  duration: {{ default "2160h" $cm.duration | quote }} # 90d
+  renewBefore: {{ default "360h" $cm.renewBefore | quote }} # 15d
+  issuerRef:
+    name: {{ required "services.openldap.tls.certManager.issuerRef.name is required when cert-manager is enabled" $cm.issuerRef.name | quote }}
+    {{- if $cm.issuerRef.kind }}
+    kind: {{ $cm.issuerRef.kind | quote }}
+    {{- end }}
+    {{- if $cm.issuerRef.group }}
+    group: {{ $cm.issuerRef.group | quote }}
+    {{- end }}
+  dnsNames:
+    - {{ .appName }}
+    - {{ printf "%s.%s" .appName (include "oc.namespace" .) }}
+    - {{ printf "%s.%s.svc" .appName (include "oc.namespace" .) }}
+    - {{ printf "%s.%s.svc.cluster.local" .appName (include "oc.namespace" .) }}
+    {{- range $cm.dnsNames }}
+    - {{ . | quote }}
+    {{- end }}
+  {{- if $cm.ipAddresses }}
+  ipAddresses:
+    {{- range $cm.ipAddresses }}
+    - {{ . | quote }}
+    {{- end }}
+  {{- end }}
+{{- end }}

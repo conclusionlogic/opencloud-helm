@@ -5844,14 +5844,28 @@ services:
     # LDAP domain and organisation
     domain: opencloud.eu
     organisation: OpenCloud
+    tls:
+      certManager:
+        enabled: false
+        # Secret name to write the certificate to. Defaults to `secretRefs.ldapCertRef` (ldap-cert).
+        secretName: ""
+        # Certificate lifetime settings (default: 90d, renew 15d before).
+        duration: 2160h
+        renewBefore: 360h
+        issuerRef:
+          name: ""
+          kind: ClusterIssuer
+          group: cert-manager.io
+        dnsNames: []
+        ipAddresses: []
     # LDAP image settings
     image:
       # LDAP image registry
       registry: docker.io
       # LDAP image repository
-      repository: cleanstart/openldap
+      repository: osixia/openldap
       # LDAP image tag
-      tag: 2.6-amd64
+      tag: 1.5.0
       # Image pull policy
       pullPolicy: IfNotPresent
     # Additional schema files (present in /etc/openldap/schema) to load.

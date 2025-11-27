@@ -1,5 +1,6 @@
 {{- include "oc.basicServiceTemplates" (dict "scope" . "appName" "appNameGraph" "appNameSuffix" "") -}}
 {{- $openldap := .Values.services.openldap -}}
+{{- $needsLdapCA := or (not .Values.features.externalUserManagement.enabled) (not .Values.features.externalUserManagement.ldap.certTrusted) (and .Values.features.externalUserManagement.enabled $openldap.enabled (not $openldap.tls.certManager.enabled)) -}}
 apiVersion: apps/v1
 kind: Deployment
 {{ include "oc.metadata" . }}
@@ -92,7 +93,7 @@ spec:
             - name: GRAPH_LDAP_SERVER_WRITE_ENABLED
               value: {{ .Values.features.externalUserManagement.ldap.writeable | quote }}
             - name: GRAPH_LDAP_CACERT
-              {{ if or (not .Values.features.externalUserManagement.enabled) (not .Values.features.externalUserManagement.ldap.certTrusted) }}
+              {{ if $needsLdapCA }}
               value: /etc/opencloud/ldap-ca/ldap-ca.crt
               {{ else }}
               value: "" # no cert needed
@@ -260,7 +261,7 @@ spec:
           emptyDir: {}
           {{ end }}
         - name: ldap-ca
-          {{ if or (not .Values.features.externalUserManagement.enabled) (not .Values.features.externalUserManagement.ldap.certTrusted) }}
+          {{ if $needsLdapCA }}
           secret:
             secretName: {{ include "secrets.ldapCASecret" . }}
           {{ else }}

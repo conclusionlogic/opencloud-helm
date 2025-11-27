@@ -1,0 +1,25 @@
+{{- include "oc.basicServiceTemplates" (dict "scope" . "appName" "appNameOpenldap" "appNameSuffix" "") -}}
+{{- $openldap := .Values.services.openldap }}
+{{- $cm := $openldap.tls.certManager }}
+{{- if and $openldap.enabled .Values.features.externalUserManagement.enabled (not $cm.enabled) }}
+{{- $hasCARef := .Values.secretRefs.ldapCaRef }}
+{{- $hasCertRef := .Values.secretRefs.ldapCertRef }}
+{{- if and (not $hasCARef) $hasCertRef }}
+{{- fail "secretRefs.ldapCertRef requires secretRefs.ldapCaRef to be set as well" }}
+{{- end }}
+{{- if and $hasCARef (not $hasCertRef) }}
+{{- fail "secretRefs.ldapCaRef requires secretRefs.ldapCertRef to be set as well" }}
+{{- end }}
+{{- if and (not $hasCARef) (not $hasCertRef) }}
+{{- $ca := genCA "ldap-ca" 3650 }}
+{{- $labels := dict "app" .appName }}
+{{- $caParams := dict "ldap-ca.crt" $ca.Cert "ldap-ca.key" $ca.Key }}
+{{- include "oc.secret" (dict "scope" . "name" (include "secrets.ldapCASecret" .) "params" $caParams "labels" $labels) }}
+---
+{{- $namespace := include "oc.namespace" . }}
+{{- $altNames := list .appName (printf "%s.%s" .appName $namespace) (printf "%s.%s.svc" .appName $namespace) (printf "%s.%s.svc.cluster.local" .appName $namespace) }}
+{{- $cert := genSignedCert .appName nil $altNames 3650 $ca }}
+{{- $certParams := dict "ldap.crt" $cert.Cert "ldap.key" $cert.Key }}
+{{- include "oc.secret" (dict "scope" . "name" (include "secrets.ldapCertSecret" .) "params" $certParams "labels" $labels) }}
+{{- end }}
+{{- end }}

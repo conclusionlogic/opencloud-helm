@@ -25,7 +25,11 @@ All take the scope as the first and only parameter.
 {{- end -}}
 
 {{- define "secrets.ldapCASecret" -}}
+{{- if and .Values.services.openldap.tls.certManager.enabled (not .Values.secretRefs.ldapCaRef) -}}
+{{ trimAll "\"" (include "secrets.ldapCertSecret" .) | quote }}
+{{- else -}}
 {{ .Values.secretRefs.ldapCaRef | default "ldap-ca" | quote }}
+{{- end -}}
 {{- end -}}
 
 {{- define "secrets.ldapCertSecret" -}}

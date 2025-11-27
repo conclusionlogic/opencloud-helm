@@ -1,6 +1,6 @@
 {{- include "oc.basicServiceTemplates" (dict "scope" . "appName" "appNameOpenldap" "appNameSuffix" "") -}}
 {{- $openldap := .Values.services.openldap }}
-{{- if $openldap.enabled }}
+{{- if and $openldap.enabled .Values.features.externalUserManagement.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -18,8 +18,10 @@ spec:
       targetPort: ldap
       protocol: TCP
       name: ldap
+      appProtocol: {{ .Values.service.appProtocol.ldaps | default "tcp" | quote }}
     - port: {{ $openldap.ports.ldaps | default 636 }}
       targetPort: ldaps
       protocol: TCP
       name: ldaps
+      appProtocol: {{ .Values.service.appProtocol.ldaps | default "tcp" | quote }}
 {{- end }}

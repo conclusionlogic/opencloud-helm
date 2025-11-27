@@ -1,6 +1,7 @@
 {{- include "oc.basicServiceTemplates" (dict "scope" . "appName" "appNameOpenldap" "appNameSuffix" "") -}}
 {{- $openldap := .Values.services.openldap }}
-{{- if $openldap.enabled }}
+{{- $useCertManager := and $openldap.tls.certManager.enabled }}
+{{- if and $openldap.enabled .Values.features.externalUserManagement.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 {{ include "oc.metadata" . }}
@@ -12,53 +13,105 @@ spec:
   template:
     {{- include "oc.templateMetadata" (dict "scope" $ "configCheck" false) | nindent 4 }}
     spec:
+      {{- include "oc.affinity" $ | nindent 6 }}
+      {{- include "oc.securityContextAndtopologySpreadConstraints" . | nindent 6 }}
+      {{- include "oc.priorityClassName" $.priorityClassName | nindent 6 }}
+      {{- include "oc.hostAliases" $ | nindent 6 }}
+      nodeSelector: {{ toYaml $.nodeSelector | nindent 8 }}
       {{- with $openldap.podSecurityContext }}
       securityContext:
 {{ toYaml . | nindent 8 }}
       {{- end }}
       containers:
         - name: {{ .appName }}
-          image: "{{ ($openldap.image.registry | default "docker.io") }}/{{ ($openldap.image.repository | default "cleanstart/openldap") }}:{{ ($openldap.image.tag | default "2.6-amd64") }}"
+          image: "{{ ($openldap.image.registry | default "docker.io") }}/{{ ($openldap.image.repository | default "osixia/openldap") }}:{{ ($openldap.image.tag | default "1.5.0") }}"
           imagePullPolicy: {{ $openldap.image.pullPolicy | default "IfNotPresent" }}
+          {{- with $openldap.securityContext }}
           securityContext:
-{{- toYaml $openldap.securityContext | nindent 12 }}
+{{- toYaml . | nindent 12 }}
+          {{- end }}
           env:
             - name: LDAP_ORGANISATION
               value: {{ $openldap.organisation | quote }}
             - name: LDAP_DOMAIN
               value: {{ $openldap.domain | quote }}
+            - name: LDAP_BASE_DN
+              value: {{ include "oc.ldapBaseDN" . | quote }}
             - name: LDAP_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secretRefs.ldapSecretRef | default .appName }}
+                  name: {{ include "secrets.ldapBindSecret" . }}
                   key: reva-ldap-bind-password
+            - name: LDAP_CONFIG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "secrets.ldapBindSecret" . }}
+                  key: reva-ldap-bind-password
+            - name: LDAP_READONLY_USER
+              value: "false"
+            - name: LDAP_TLS
+              value: "true"
+            - name: LDAP_TLS_CRT_FILENAME
+              value: ldap.crt
+            - name: LDAP_TLS_KEY_FILENAME
+              value: ldap.key
+            - name: LDAP_TLS_CA_CRT_FILENAME
+              value: ldap-ca.crt
+            - name: LDAP_TLS_ENFORCE
+              value: "true"
+            - name: LDAP_TLS_VERIFY_CLIENT
+              value: "allow"
           ports:
             - name: ldap
               containerPort: {{ $openldap.ports.ldap | default 389 }}
             - name: ldaps
               containerPort: {{ $openldap.ports.ldaps | default 636 }}
           volumeMounts:
-            - name: slapd-conf-template
-              mountPath: /etc/openldap/slapd.conf
-              subPath: slapd.conf.tpl
-            - name: slapd-conf-template
-              mountPath: /etc/openldap/schema/10_opencloud.schema
-              subPath: 10_opencloud.schema
-            {{- if $openldap.persistence.enabled }}
+            - name: bootstrap
+              mountPath: /container/service/slapd/assets/config/bootstrap/ldif/custom/10_base.ldif
+              subPath: 10_base.ldif
+              readOnly: true
+            - name: bootstrap
+              mountPath: /container/service/slapd/assets/config/bootstrap/schema/custom/10_opencloud_schema.ldif
+              subPath: 10_opencloud_schema.ldif
+              readOnly: true
             - name: data
               mountPath: {{ $openldap.persistence.dataPath | default "/var/lib/ldap" | quote }}
               subPath: data
-              readOnly: false
-            {{- end }}
+            - name: data
+              mountPath: {{ $openldap.persistence.configPath | default "/etc/ldap/slapd.d" | quote }}
+              subPath: config
+            - name: ldap-certs
+              mountPath: /container/service/slapd/assets/certs
+              readOnly: true
           resources:
             {{- toYaml .resources | nindent 12 }}
+      {{- include "oc.imagePullSecrets" $ | nindent 6 }}
       volumes:
-        - name: slapd-conf-template
+        - name: bootstrap
           configMap:
-            name: {{ .appName }}-slapd-conf
-        {{- if $openldap.persistence.enabled }}
+            name: {{ .appName }}-config
+        - name: ldap-certs
+          projected:
+            sources:
+              - secret:
+                  name: {{ include "secrets.ldapCertSecret" . }}
+                  items:
+                    - key: {{ ternary "tls.crt" "ldap.crt" $useCertManager }}
+                      path: ldap.crt
+                    - key: {{ ternary "tls.key" "ldap.key" $useCertManager }}
+                      path: ldap.key
+              - secret:
+                  name: {{ ternary (include "secrets.ldapCertSecret" .) (include "secrets.ldapCASecret" .) $useCertManager }}
+                  items:
+                    - key: {{ ternary "ca.crt" "ldap-ca.crt" $useCertManager }}
+                      path: ldap-ca.crt
+                  optional: {{ ternary "true" "false" $useCertManager }}
         - name: data
+          {{- if $openldap.persistence.enabled }}
           persistentVolumeClaim:
             claimName: {{ .appName }}-data
-        {{- end }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
 {{- end }}
