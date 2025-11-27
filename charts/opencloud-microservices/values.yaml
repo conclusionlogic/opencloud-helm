@@ -5893,7 +5893,7 @@ services:
 
     # Pod security context tailored for OpenLDAP (matches the user/group the image drops to).
     podSecurityContext:
-      fsGroup: 102
+      fsGroup: 0
       fsGroupChangePolicy: OnRootMismatch
 
     # Container security context. OpenLDAP needs setuid/setgid to switch to the ldap user inside the image.
