@@ -56,7 +56,7 @@ spec:
               value: "https://{{ .Values.externalDomain }}"
 
             - name: GRAPH_STORE_NODES
-              value: nats:9233
+              value: {{ tpl (join "," .Values.store.nodes) . | quote }}
             - name: GRAPH_STORE_DATABASE
               value: graph
 
