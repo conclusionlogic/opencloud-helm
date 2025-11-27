@@ -91,7 +91,7 @@ spec:
             - name: GRAPH_LDAP_SERVER_WRITE_ENABLED
               value: {{ .Values.features.externalUserManagement.ldap.writeable | quote }}
             - name: GRAPH_LDAP_CACERT
-              {{ if or (not .Values.features.externalUserManagement.enabled) (not .Values.features.externalUserManagement.ldap.certTrusted) }}
+              {{ if or .Values.secretRefs.ldapCaRef (not .Values.features.externalUserManagement.ldap.certTrusted) }}
               value: /etc/opencloud/ldap-ca/ldap-ca.crt
               {{ else }}
               value: "" # no cert needed
@@ -259,7 +259,7 @@ spec:
           emptyDir: {}
           {{ end }}
         - name: ldap-ca
-          {{ if or (not .Values.features.externalUserManagement.enabled) (not .Values.features.externalUserManagement.ldap.certTrusted) }}
+          {{ if or (not .Values.features.externalUserManagement.enabled) (not .Values.features.externalUserManagement.ldap.certTrusted) .Values.secretRefs.ldapCaRef }}
           secret:
             secretName: {{ include "secrets.ldapCASecret" . }}
           {{ else }}
