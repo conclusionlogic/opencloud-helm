@@ -1,6 +1,9 @@
 {{- include "oc.basicServiceTemplates" (dict "scope" . "appName" "appNameOpenldap" "appNameSuffix" "") -}}
 {{- $openldap := .Values.services.openldap }}
 {{- $useCertManager := and $openldap.tls.certManager.enabled }}
+{{- $certSecret := include "secrets.ldapCertSecret" . }}
+{{- $caSecret := include "secrets.ldapCASecret" . }}
+{{- $useCA := or (not $useCertManager) .Values.secretRefs.ldapCaRef }}
 {{- if and $openldap.enabled .Values.features.externalUserManagement.enabled }}
 apiVersion: apps/v1
 kind: Deployment
@@ -20,6 +23,20 @@ spec:
       {{- with $openldap.podSecurityContext }}
       securityContext:
 {{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if $openldap.persistence.enabled }}
+      initContainers:
+        - name: init-openldap-dirs
+          {{- include "oc.initContainerImage" $ | nindent 10 }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -euo pipefail
+              mkdir -p /data/data /data/config
+          volumeMounts:
+            - name: data
+              mountPath: /data
       {{- end }}
       containers:
         - name: {{ .appName }}
@@ -54,8 +71,10 @@ spec:
               value: ldap.crt
             - name: LDAP_TLS_KEY_FILENAME
               value: ldap.key
+            {{- if $useCA }}
             - name: LDAP_TLS_CA_CRT_FILENAME
               value: ldap-ca.crt
+            {{- end }}
             - name: LDAP_TLS_ENFORCE
               value: "true"
             - name: LDAP_TLS_VERIFY_CLIENT
@@ -94,18 +113,20 @@ spec:
           projected:
             sources:
               - secret:
-                  name: {{ include "secrets.ldapCertSecret" . }}
+                  name: {{ $certSecret }}
                   items:
                     - key: {{ ternary "tls.crt" "ldap.crt" $useCertManager }}
                       path: ldap.crt
                     - key: {{ ternary "tls.key" "ldap.key" $useCertManager }}
                       path: ldap.key
+              {{- if $useCA }}
               - secret:
-                  name: {{ ternary (include "secrets.ldapCertSecret" .) (include "secrets.ldapCASecret" .) $useCertManager }}
+                  name: {{ $caSecret }}
                   items:
                     - key: {{ ternary "ca.crt" "ldap-ca.crt" $useCertManager }}
                       path: ldap-ca.crt
-                  optional: {{ ternary "true" "false" $useCertManager }}
+                  optional: false
+              {{- end }}
         - name: data
           {{- if $openldap.persistence.enabled }}
           persistentVolumeClaim:
