@@ -26,7 +26,7 @@ data:
     maxsize	1073741824
     suffix	"{{ include "oc.ldapBaseDN" . }}"
     rootdn	"{{ include "oc.ldapAdminDN" . }}"
-    rootpw	{{ .Values.services.openldap.adminPassword | quote }}
+    rootpw	{{ .Values.secretRefs.ldapSecretRef | default "ldap-bind-secrets" | quote }}
     directory	{{ $openldap.persistence.dataPath | default "/var/lib/ldap" }}
     index	objectClass	eq
 
