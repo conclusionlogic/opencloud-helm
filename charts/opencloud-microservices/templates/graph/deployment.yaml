@@ -259,21 +259,13 @@ spec:
           emptyDir: {}
           {{ end }}
         - name: ldap-ca
+          {{- $ldapCAKey := ternary "ca.crt" "ldap-ca.crt" (not (empty .Values.secretRefs.ldapCaRef)) }}
           {{ if or (not .Values.features.externalUserManagement.enabled) (not .Values.features.externalUserManagement.ldap.certTrusted) .Values.secretRefs.ldapCaRef }}
-          projected:
-            sources:
-              - secret:
-                  name: {{ include "secrets.ldapCASecret" . }}
-                  items:
-                    - key: ldap-ca.crt
-                      path: ldap-ca.crt
-                  optional: true
-              - secret:
-                  name: {{ include "secrets.ldapCASecret" . }}
-                  items:
-                    - key: ca.crt
-                      path: ldap-ca.crt
-                  optional: true
+          secret:
+            secretName: {{ include "secrets.ldapCASecret" . }}
+            items:
+              - key: {{ $ldapCAKey }}
+                path: ldap-ca.crt
           {{ else }}
           emptyDir: {}
           {{ end }}
