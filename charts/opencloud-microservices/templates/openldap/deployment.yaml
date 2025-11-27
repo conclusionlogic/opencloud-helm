@@ -14,7 +14,6 @@ spec:
     {{- include "oc.templateMetadata" (dict "scope" $ "configCheck" false) | nindent 4 }}
     spec:
       {{- include "oc.affinity" $ | nindent 6 }}
-      {{- include "oc.securityContextAndtopologySpreadConstraints" . | nindent 6 }}
       {{- include "oc.priorityClassName" $.priorityClassName | nindent 6 }}
       {{- include "oc.hostAliases" $ | nindent 6 }}
       nodeSelector: {{ toYaml $.nodeSelector | nindent 8 }}
