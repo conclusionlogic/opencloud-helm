@@ -16,106 +16,6 @@ spec:
       securityContext:
 {{ toYaml . | nindent 8 }}
       {{- end }}
-      initContainers:
-        - name: init-slapd-conf
-          image: "docker.io/mlan/openldap:latest"
-          imagePullPolicy: IfNotPresent
-          securityContext:
-            runAsUser: 0
-            runAsGroup: 0
-            runAsNonRoot: false
-          env:
-            - name: LDAP_BASE_DN
-              value: {{ include "oc.ldapBaseDN" . | quote }}
-            - name: LDAP_ROOT_DN
-              value: {{ include "oc.ldapAdminDN" . | quote }}
-            - name: LDAP_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.secretRefs.ldapSecretRef | default .appName }}
-                  key: reva-ldap-bind-password
-          command: ["/bin/sh","-c"]
-          args:
-            - |
-              set -eu
-              HASH=$(/usr/sbin/slappasswd -s "$LDAP_ADMIN_PASSWORD")
-              sed -e "s|__LDAP_BASE_DN__|$LDAP_BASE_DN|g" \
-                  -e "s|__LDAP_ROOT_DN__|$LDAP_ROOT_DN|g" \
-                  -e "s|__LDAP_ROOTPW_HASH__|$HASH|g" \
-                  /config/slapd.conf.tpl > /render/slapd.conf
-          volumeMounts:
-            - name: slapd-conf-render
-              mountPath: /render
-            - name: slapd-conf-template
-              mountPath: /config/slapd.conf.tpl
-              subPath: slapd.conf.tpl
-        - name: init-slapadd-base
-          image: "docker.io/mlan/openldap:latest"
-          imagePullPolicy: IfNotPresent
-          securityContext:
-            runAsUser: 0
-            runAsGroup: 0
-            runAsNonRoot: false
-          env:
-            - name: LDAP_DATA_DIR
-              value: {{ $openldap.persistence.dataPath | default "/var/lib/ldap" | quote }}
-          command: ["/bin/sh","-c"]
-          args:
-            - |
-              set -eu
-              mkdir -p "$LDAP_DATA_DIR"
-              chown -R 0:0 "$LDAP_DATA_DIR"
-              mkdir -p /etc/openldap/schema
-              cat >/etc/openldap/schema/10_opencloud.schema <<'EOF'
-objectidentifier openCloudOid 1.3.6.1.4.1.63016
-attributetype ( openCloudOid:1.1.1 NAME 'openCloudUUID'
-  DESC 'A non-reassignable and persistent account ID'
-  EQUALITY uuidMatch
-  SUBSTR caseIgnoreSubstringsMatch
-  SYNTAX 1.3.6.1.1.16.1 SINGLE-VALUE )
-attributetype ( openCloudOid:1.1.2 NAME 'openCloudExternalIdentity'
-  DESC 'A triple separated by "$" representing the objectIdentity resource type of the Graph API ( signInType $ issuer $ issuerAssignedId )'
-  EQUALITY caseIgnoreMatch
-  SUBSTR caseIgnoreSubstringsMatch
-  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-attributetype ( openCloudOid:1.1.3 NAME 'openCloudUserEnabled'
-  DESC 'A boolean value indicating if the user is enabled'
-  EQUALITY booleanMatch
-  SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE )
-attributetype ( openCloudOid:1.1.4 NAME 'openCloudUserType'
-  DESC 'User type (e.g. Member or Guest)'
-  EQUALITY caseIgnoreMatch
-  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
-attributetype ( openCloudOid:1.1.5 NAME 'openCloudLastSignInTimestamp'
-  DESC 'The timestamp of the last sign-in'
-  EQUALITY generalizedTimeMatch
-  ORDERING generalizedTimeOrderingMatch
-  SYNTAX 1.3.6.1.4.1.1466.115.121.1.24 SINGLE-VALUE )
-objectclass ( openCloudOid:1.2.1 NAME 'openCloudObject'
-  DESC 'OpenCloud base objectclass'
-  AUXILIARY
-  MAY ( openCloudUUID ) )
-objectclass ( openCloudOid:1.2.2 NAME 'openCloudUser'
-  DESC 'OpenCloud User objectclass'
-  SUP openCloudObject
-  AUXILIARY
-  MAY ( openCloudExternalIdentity $ openCloudUserEnabled $ openCloudUserType $ openCloudLastSignInTimestamp ) )
-EOF
-              if [ -z "$(ls -A "$LDAP_DATA_DIR" 2>/dev/null || true)" ]; then
-                /usr/sbin/slapadd -v -f /render/slapd.conf -l /init/10_base.ldif
-                chown -R 0:0 "$LDAP_DATA_DIR"
-              fi
-          volumeMounts:
-            - name: custom-ldif
-              mountPath: /init/10_base.ldif
-              subPath: 10_base.ldif
-            - name: slapd-conf-render
-              mountPath: /render
-            {{- if $openldap.persistence.enabled }}
-            - name: data
-              mountPath: {{ $openldap.persistence.dataPath | default "/var/lib/ldap" | quote }}
-              subPath: data
-            {{- end }}
       containers:
         - name: {{ .appName }}
           image: "{{ ($openldap.image.registry | default "docker.io") }}/{{ ($openldap.image.repository | default "cleanstart/openldap") }}:{{ ($openldap.image.tag | default "2.6-amd64") }}"
@@ -138,12 +38,12 @@ EOF
             - name: ldaps
               containerPort: {{ $openldap.ports.ldaps | default 636 }}
           volumeMounts:
-            - name: slapd-conf-render
+            - name: slapd-conf-template
               mountPath: /etc/openldap/slapd.conf
-              subPath: slapd.conf
-            - name: custom-ldif
-              mountPath: /etc/openldap/schema/10_opencloud_schema.ldif
-              subPath: 10_opencloud_schema.ldif
+              subPath: slapd.conf.tpl
+            - name: slapd-conf-template
+              mountPath: /etc/openldap/schema/10_opencloud.schema
+              subPath: 10_opencloud.schema
             {{- if $openldap.persistence.enabled }}
             - name: data
               mountPath: {{ $openldap.persistence.dataPath | default "/var/lib/ldap" | quote }}
@@ -153,14 +53,9 @@ EOF
           resources:
             {{- toYaml .resources | nindent 12 }}
       volumes:
-        - name: custom-ldif
-          configMap:
-            name: {{ .appName }}-config
         - name: slapd-conf-template
           configMap:
             name: {{ .appName }}-slapd-conf
-        - name: slapd-conf-render
-          emptyDir: {}
         {{- if $openldap.persistence.enabled }}
         - name: data
           persistentVolumeClaim:
