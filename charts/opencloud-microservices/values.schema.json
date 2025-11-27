@@ -12482,14 +12482,14 @@
                   ]
                 },
                 "repository": {
-                  "default": "cleanstart/openldap",
+                  "default": "osixia/openldap",
                   "description": "OpenLDAP image repository",
                   "required": [],
                   "title": "repository",
                   "type": "string"
                 },
                 "tag": {
-                  "default": "2.6-amd64",
+                  "default": "1.5.0",
                   "description": "OpenLDAP image tag",
                   "required": [],
                   "title": "tag",
@@ -12498,6 +12498,83 @@
               },
               "required": [],
               "title": "image",
+              "type": "object"
+            },
+            "tls": {
+              "additionalProperties": false,
+              "description": "TLS settings for OpenLDAP.",
+              "properties": {
+                "certManager": {
+                  "additionalProperties": false,
+                  "description": "Configure cert-manager-issued certificate. When disabled, self-signed secrets are generated.",
+                  "properties": {
+                    "dnsNames": {
+                      "default": [],
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "duration": {
+                      "description": "Requested certificate duration (e.g. 2160h for 90d).",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "enabled": {
+                      "default": false,
+                      "type": "boolean"
+                    },
+                    "ipAddresses": {
+                      "default": [],
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "issuerRef": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "group": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "kind": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [],
+                      "type": "object"
+                    },
+                    "renewBefore": {
+                      "description": "How long before expiry cert-manager should renew (e.g. 360h for 15d).",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "secretName": {
+                      "description": "Secret name to write the TLS certificate to. Defaults to secretRefs.ldapCertRef when empty.",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [],
+                  "type": "object"
+                }
+              },
+              "required": [],
               "type": "object"
             },
             "loadSchemas": {
