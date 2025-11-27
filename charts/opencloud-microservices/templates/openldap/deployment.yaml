@@ -16,27 +16,6 @@ spec:
       securityContext:
 {{ toYaml . | nindent 8 }}
       {{- end }}
-      containers:
-        - name: {{ .appName }}
-          image: "{{ ($openldap.image.registry | default "docker.io") }}/{{ ($openldap.image.repository | default "cleanstart/openldap") }}:{{ ($openldap.image.tag | default "2.6-amd64") }}"
-          imagePullPolicy: {{ $openldap.image.pullPolicy | default "IfNotPresent" }}
-          securityContext:
-{{- toYaml $openldap.securityContext | nindent 12 }}
-          env:
-            - name: LDAP_ORGANISATION
-              value: {{ $openldap.organisation | quote }}
-            - name: LDAP_DOMAIN
-              value: {{ $openldap.domain | quote }}
-            - name: LDAP_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.secretRefs.ldapSecretRef | default .appName }}
-                  key: reva-ldap-bind-password
-          ports:
-            - name: ldap
-              containerPort: {{ $openldap.ports.ldap | default 389 }}
-            - name: ldaps
-              containerPort: {{ $openldap.ports.ldaps | default 636 }}
       initContainers:
         - name: init-slapd-conf
           {{- include "oc.initContainerImage" $ | nindent 10 }}
@@ -91,10 +70,6 @@ spec:
               mountPath: {{ $openldap.persistence.dataPath | default "/var/lib/ldap" | quote }}
               subPath: data
             {{- end }}
-      {{- with $openldap.podSecurityContext }}
-      securityContext:
-{{ toYaml . | nindent 8 }}
-      {{- end }}
       containers:
         - name: {{ .appName }}
           image: "{{ ($openldap.image.registry | default "docker.io") }}/{{ ($openldap.image.repository | default "cleanstart/openldap") }}:{{ ($openldap.image.tag | default "2.6-amd64") }}"
