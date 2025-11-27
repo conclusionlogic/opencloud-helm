@@ -72,7 +72,7 @@ spec:
             - name: GRAPH_LDAP_URI
               value: ldaps://{{ .appNameIdm }}:9235
             - name: GRAPH_LDAP_CACERT
-              value: /etc/opencloud/ldap-ca/ca.crt
+              value: /etc/opencloud/ldap-ca/ldap-ca.crt
             - name: GRAPH_LDAP_BIND_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -92,7 +92,7 @@ spec:
               value: {{ .Values.features.externalUserManagement.ldap.writeable | quote }}
             - name: GRAPH_LDAP_CACERT
               {{ if or .Values.secretRefs.ldapCaRef (not .Values.features.externalUserManagement.ldap.certTrusted) }}
-              value: /etc/opencloud/ldap-ca/ca.crt
+              value: /etc/opencloud/ldap-ca/ldap-ca.crt
               {{ else }}
               value: "" # no cert needed
               {{ end }}
@@ -260,8 +260,20 @@ spec:
           {{ end }}
         - name: ldap-ca
           {{ if or (not .Values.features.externalUserManagement.enabled) (not .Values.features.externalUserManagement.ldap.certTrusted) .Values.secretRefs.ldapCaRef }}
-          secret:
-            secretName: {{ include "secrets.ldapCASecret" . }}
+          projected:
+            sources:
+              - secret:
+                  name: {{ include "secrets.ldapCASecret" . }}
+                  items:
+                    - key: ldap-ca.crt
+                      path: ldap-ca.crt
+                  optional: true
+              - secret:
+                  name: {{ include "secrets.ldapCASecret" . }}
+                  items:
+                    - key: ca.crt
+                      path: ldap-ca.crt
+                  optional: true
           {{ else }}
           emptyDir: {}
           {{ end }}

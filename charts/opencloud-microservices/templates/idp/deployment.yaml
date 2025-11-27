@@ -100,8 +100,20 @@ spec:
         - name: oc-data-tmp
           emptyDir: {}
         - name: ldap-ca
-          secret:
-            secretName: {{ include "secrets.ldapCASecret" . }}
+          projected:
+            sources:
+              - secret:
+                  name: {{ include "secrets.ldapCASecret" . }}
+                  items:
+                    - key: ldap-ca.crt
+                      path: ldap-ca.crt
+                  optional: true
+              - secret:
+                  name: {{ include "secrets.ldapCASecret" . }}
+                  items:
+                    - key: ca.crt
+                      path: ldap-ca.crt
+                  optional: true
         - name: idp-secrets
           secret:
             secretName: {{ include "secrets.idpSecret" . }}
